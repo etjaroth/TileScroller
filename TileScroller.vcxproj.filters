@@ -13,86 +13,170 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Shaders">
-      <UniqueIdentifier>{65516379-3d13-4c5a-bdee-a5126d7a487d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Libraries">
       <UniqueIdentifier>{9b64d37d-fa90-47fb-9244-30b2ded4abaa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders\Shader_Files">
+    <Filter Include="Header Files\Box">
+      <UniqueIdentifier>{68d8e5b9-ab06-4ed8-988f-9521312ed282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering">
+      <UniqueIdentifier>{3ba1035e-6292-440d-8b9f-65fb0a26be30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering\Shaders">
+      <UniqueIdentifier>{1b4f927e-436f-470c-b106-a61900fd8e75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Box">
+      <UniqueIdentifier>{e5b13b7a-1f69-4119-89ec-1ab29351eafb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{9012a5be-9439-4b7c-acc4-245adc5827f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\Shaders">
+      <UniqueIdentifier>{65516379-3d13-4c5a-bdee-a5126d7a487d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\Shaders\Shader_Files">
       <UniqueIdentifier>{967508fe-7d96-4689-af10-46a4e347d184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity">
+      <UniqueIdentifier>{92e425fe-eaa0-44ed-aabf-3b00dcb4cb3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{98f14e8c-de65-4123-97ee-f51dbee9c86d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Grid">
+      <UniqueIdentifier>{6dd2d263-8c2e-4645-914a-7272e9ce086a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Grid">
+      <UniqueIdentifier>{205f3a36-3f8b-4d61-8535-2abf7a9d7e2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TileScroller.cpp">
+    <ClCompile Include="Top_Down_Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SSBO_Compute_Shader.cpp">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Rendering\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="Compute_Shader.cpp">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Rendering\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Rendering\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Documents\cpplibs\lib\opengl\glad\src\glad.c">
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
-    <ClCompile Include="Collision_Box.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Box.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision_Box.cpp">
+      <Filter>Source Files\Box</Filter>
     </ClCompile>
     <ClCompile Include="Render_Batch.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Spritesheet.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Poisson_Discs.cpp">
+      <Filter>Source Files\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Scroller.cpp">
+      <Filter>Source Files\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Spatial_Hashmap.cpp">
+      <Filter>Source Files\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Tileset.cpp">
+      <Filter>Source Files\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision_Info.cpp">
+      <Filter>Source Files\Box</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="opengl_libs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Compute_Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SSBO_Compute_Shader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Box.h">
+      <Filter>Header Files\Box</Filter>
     </ClInclude>
     <ClInclude Include="Collision_Box.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Box</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render_Batch.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Spritesheet.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="opengl_libs.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Compute_Shader.h">
+      <Filter>Header Files\Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SSBO_Compute_Shader.h">
+      <Filter>Header Files\Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Render_Batch.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="glm_Vector_Hash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Header Files\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Poisson_Discs.h">
+      <Filter>Header Files\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Scroller.h">
+      <Filter>Header Files\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Spatial_Hashmap.h">
+      <Filter>Header Files\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Tileset.h">
+      <Filter>Header Files\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision_Info.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Spriteshader.vert">
-      <Filter>Source Files\Shaders\Shader_Files</Filter>
+      <Filter>Source Files\Rendering\Shaders\Shader_Files</Filter>
     </None>
     <None Include="Spriteshader.frag">
-      <Filter>Source Files\Shaders\Shader_Files</Filter>
+      <Filter>Source Files\Rendering\Shaders\Shader_Files</Filter>
+    </None>
+    <None Include="Centershader.vert">
+      <Filter>Source Files\Rendering\Shaders\Shader_Files</Filter>
     </None>
   </ItemGroup>
 </Project>

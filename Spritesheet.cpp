@@ -3,17 +3,16 @@
 #include <iostream>
 
 Spritesheet::Spritesheet() {
-	size = glm::ivec2(0.0f);
-	sprite_size = glm::ivec2(0.0f);
-	size_in_texles = glm::ivec2(0.0f);
-	sprite_size_in_texles = glm::ivec2(0.0f);
+	spritesheet_size = glm::ivec2(0.0f);
+	tex_sprite_size = glm::ivec2(0.0f);
+	tex_spritesheet_size = glm::ivec2(0.0f);
 }
 
 Spritesheet::Spritesheet(const char* filepath, glm::ivec2 sprite_dimensions) {
-	sprite_size_in_texles = sprite_dimensions;
+	tex_sprite_size = sprite_dimensions;
 	load_spritesheet(filepath);
-	size = glm::vec3(1.0f);
-	sprite_size = glm::vec2(sprite_size_in_texles) / glm::vec2(size_in_texles);
+	spritesheet_size = glm::vec2(tex_spritesheet_size) / glm::vec2(tex_sprite_size);
+	sprite_size = glm::vec2(tex_sprite_size) / glm::vec2(tex_spritesheet_size);
 }
 
 Spritesheet::~Spritesheet() {
@@ -27,18 +26,22 @@ void Spritesheet::load_spritesheet(std::string filepath) {
 	}
 
 	stbi_set_flip_vertically_on_load(flip);
+	
 	int nrChannels;
-	const GLenum colortype = GL_RGB;
-	unsigned char* data = stbi_load(filepath.c_str(), &size_in_texles.x, &size_in_texles.y, &nrChannels, 0);
+	const GLenum colortype = GL_RGBA;
+	unsigned char* data = stbi_load(filepath.c_str(), &tex_spritesheet_size.x, &tex_spritesheet_size.y, &nrChannels, 0);
 
 	glGenTextures(1, &texture);
 	glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
 	glBindTexture(GL_TEXTURE_2D, texture); // using texture
 
-	glTexImage2D(GL_TEXTURE_2D, 0, colortype, size_in_texles.x, size_in_texles.y, 0, colortype, GL_UNSIGNED_BYTE, data); // Create texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, colortype, tex_spritesheet_size.x, tex_spritesheet_size.y, 0, colortype, GL_UNSIGNED_BYTE, data); // Create texture
 	glGenerateMipmap(GL_TEXTURE_2D); // lowers resolution for far away objects
 	if (data) { // Error handling
-		glTexImage2D(GL_TEXTURE_2D, 0, colortype, size_in_texles.x, size_in_texles.y, 0, colortype, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, colortype, tex_spritesheet_size.x, tex_spritesheet_size.y, 0, colortype, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else
@@ -62,15 +65,68 @@ void Spritesheet::bind_texture() {
 	glBindTexture(GL_TEXTURE_2D, texture);
 }
 
+int Spritesheet::get_sprite_index(int x_index, int y_index) {
+	return y_index * (tex_spritesheet_size.y / tex_sprite_size.y) + x_index * (tex_spritesheet_size.x / tex_sprite_size.x);
+}
+
+glm::ivec2 Spritesheet::get_sprite_coords(int index) {
+	glm::ivec2 r;
+	r.x = index % (tex_spritesheet_size.x / tex_sprite_size.x);
+	r.y = index / (tex_spritesheet_size.x / tex_sprite_size.x);
+
+	//std::cout << index << "%" << (tex_spritesheet_size.x / tex_sprite_size.x) <<" -> (" << r.x << ", " << r.y << ")" << std::endl;
+
+	return r;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+glm::vec2 Spritesheet::get_sprite_top_left(int index) {
+	return get_sprite_pos(index);
+}
+
+glm::vec2 Spritesheet::get_sprite_top_right(int index) {
+	return get_sprite_pos(index) + glm::vec2(get_sprite_size().x, 0.0f);
+}
+
+glm::vec2 Spritesheet::get_sprite_bottom_left(int index) {
+	return get_sprite_pos(index) + glm::vec2(0.0f, -sprite_size.y);
+}
+
+glm::vec2 Spritesheet::get_sprite_bottom_right(int index) {
+	return get_sprite_pos(index) + glm::vec2(sprite_size.x, -sprite_size.y);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+
+glm::vec2 Spritesheet::get_sprite_top_left(int x_index, int y_index) {
+	return get_sprite_pos(x_index, y_index);
+}
+
+glm::vec2 Spritesheet::get_sprite_top_right(int x_index, int y_index) {
+	return get_sprite_pos(x_index, y_index) + glm::vec2(get_sprite_size().x, 0.0f);
+}
+
+glm::vec2 Spritesheet::get_sprite_bottom_left(int x_index, int y_index) {
+	return get_sprite_pos(x_index, y_index) + glm::vec2(0.0f, -sprite_size.y);
+}
+
+glm::vec2 Spritesheet::get_sprite_bottom_right(int x_index, int y_index) {
+	return get_sprite_pos(x_index, y_index) + glm::vec2(sprite_size.x, -sprite_size.y);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
 glm::vec2 Spritesheet::get_sprite_pos(int index) {
-	int sprites_per_row = size.x / sprite_size.x;
-	int x = index % sprites_per_row;
-	int y = index / sprites_per_row;
-	return get_sprite_pos(x, y);
+	glm::ivec2 coord = get_sprite_coords(index);
+
+	return get_sprite_pos(coord.x, coord.y);
 }
 
 glm::vec2 Spritesheet::get_sprite_pos(int x_index, int y_index) {
-	return sprite_size * glm::ivec2(x_index, y_index);
+	glm::vec2 r = sprite_size * glm::vec2(x_index, y_index);
+	return r;
 }
 
 glm::vec2 Spritesheet::get_sprite_size() {
@@ -80,10 +136,9 @@ glm::vec2 Spritesheet::get_sprite_size() {
 // Operators
 bool operator==(const Spritesheet& lhs, const Spritesheet& rhs) {
 	return lhs.texture == rhs.texture &&
-		lhs.size == rhs.size &&
-		lhs.sprite_size == rhs.sprite_size &&
-		lhs.size_in_texles == rhs.size_in_texles &&
-		lhs.sprite_size_in_texles == rhs.sprite_size_in_texles;
+		lhs.spritesheet_size == rhs.spritesheet_size &&
+		lhs.tex_spritesheet_size == rhs.tex_spritesheet_size &&
+		lhs.tex_sprite_size == rhs.tex_sprite_size;
 }
 
 bool operator!=(const Spritesheet& lhs, const Spritesheet& rhs) {

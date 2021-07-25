@@ -35,5 +35,6 @@ public:
 	Spritesheet* get_spritesheet();
 
 	unsigned int store_vertices(Vertex* varr, int v_size, unsigned int* indices, int i_size);
+	void refresh_vertices() { update_VAO = true; }; // temporary (bad for encapsulation)
 	void free_vertices(unsigned int space);
 };

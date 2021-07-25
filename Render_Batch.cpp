@@ -11,7 +11,7 @@ Render_Batch::Render_Batch(Spritesheet* sheet) {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
 	
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tex_coords));
 	glEnableVertexAttribArray(1);
@@ -44,11 +44,6 @@ void Render_Batch::render() {
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, render_data.size() * sizeof(Vertex), &render_data[0], GL_STATIC_DRAW);
-
-		for (auto i = render_data.begin(); i != render_data.end(); i++) {
-			std::cout << "Vertex: " << i->position.x << ", " << i->position.y << std::endl;
-			std::cout << "        " << i->tex_coords.x << ", " << i->tex_coords.y << std::endl;
-		}
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);

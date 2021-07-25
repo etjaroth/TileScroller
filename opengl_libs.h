@@ -16,3 +16,5 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #pragma warning(pop)
+
+#include <iostream>

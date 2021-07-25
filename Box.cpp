@@ -2,12 +2,12 @@
 
 Box::Box() {
 	position = glm::vec2(0.0f);
-	dimensions = glm::vec2(1.0f);
+	dimensions = glm::vec2(0.0f);
 }
 
 Box::Box(glm::vec2 pos, glm::vec2 size) {
-	position = pos;
-	dimensions = size;
+	set_pos(pos);
+	set_size(size);
 }
 
 
@@ -23,13 +23,12 @@ void Box::set_size(glm::vec2 new_dimensions) {
 
 
 void Box::change_pos(glm::vec2 pos_change) {
-	this->set_pos(this->get_pos() + pos_change);
+	set_pos(get_pos() + pos_change);
 }
 
 void Box::change_size(glm::vec2 dimensions_change) {
-	this->set_size(this->get_size() + dimensions_change);
+	set_size(get_size() + dimensions_change);
 }
-
 
 
 glm::vec2 Box::get_pos() {
