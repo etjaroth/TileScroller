@@ -50,15 +50,6 @@ void Collision_Box::iterate() {
 		collision_events.pop();
 
 		if (!pinned) {
-
-			if (name == "player")
-				//std::cout << "From " << velocity.x << ", " << velocity.y;
-
-			//change_velocity(cevent->get_velocity());
-			if (name == "player") {
-				//std::cout << " to " << velocity.x << ", " << velocity.y << " <== " << cevent->get_velocity().x << ", " << cevent->get_velocity().y << std::endl;
-			}
-
 			change_pos(cevent->get_forced_move());
 		}
 	}
@@ -202,8 +193,6 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 		{
 			collision = true;
 
-			//if (name == "player") { std::cout << (x_overlap < y_overlap ? 'x' : 'y') << " "; }
-
 			// Find out which axis is axis of least penetration
 			if (x_overlap < y_overlap)
 			{
@@ -241,7 +230,6 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 		//////////////////////////////////////
 
 		std::shared_ptr<Collision_Info> cinfo = other_box->collision_event();
-		//std::cout << name << ' ' << collision << is_solid() << std::endl;
 
 		if (is_solid()) {
 			// Calculate relative velocity
@@ -256,7 +244,6 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 
 			// Calculate restitution
 			float elasticity = std::min(get_elasticity(), other_box->get_elasticity());
-			elasticity = 0.0f;
 
 			// Calculate impulse scalar
 			float j = -(1.0f + elasticity) * velAlongNormal;
@@ -270,8 +257,6 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 
 			// Apply impulse
 			glm::vec2 impulse = j * normal;
-			//std::cout << impulse.x << ", " << impulse.y << std::endl;
-
 
 			/*A.velocity -= 1 / A.mass * impulse;
 			B.velocity += 1 / B.mass * impulse;*/
@@ -283,132 +268,17 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 
 
 			// Correct position (fixes sinking and jittering)
-			const float percent = 0.2f; // usually 20% to 80%
+			const float percent = 0.3f; // usually 20% to 80%
 			glm::vec2 correction = penetration_depth / (get_inverse_mass() + other_box->get_inverse_mass()) * percent * n;
-			//correction = penetration_depth * n;
-			//if (name == "player") { std::cout << "pen-depth: " << penetration_depth << " -> " << correction.x << ", " << correction.y << std::endl; }
 			//A.position -= A.inv_mass * correction;
 			//B.position += B.inv_mass * correction;
 			cinfo->force_move(get_inverse_mass() * correction);
-			//cinfo->force_move(correction);
 		}
 
 
 		collision_events.push(cinfo);
 	}
 	return local_velocity;
-
-	//glm::vec2 exit_move = glm::vec2(0.0f);
-	//glm::vec2 previous_move = get_previous_move();
-	//glm::vec2 exit_move = glm::vec2(0.0f);
-	//if (soft_collide(other_box)) {
-
-	//	//////////////////////////////////////////////////////////////////////
-
-	//	enum class axis { x = 0, y, both };
-	//	axis movement_axis = axis::both;
-	//	if (abs(previous_move.x) < abs(previous_move.y)) {
-	//		movement_axis = axis::y;
-	//	}
-	//	else if (abs(previous_move.x) > abs(previous_move.y)) {
-	//		movement_axis = axis::x;
-	//	}
-
-	//	//////////////////////////////////////////////////////////////////////
-
-	//	collision_cases current_case = get_collision_case(other_box);
-
-	//	//std::cout << (int)current_case << std::endl;
-
-	//	switch (current_case) {
-	//	case collision_cases::top_left_corner:
-	//		previous_move;
-	//		previous_pos;
-	//		position;
-	//		name;
-
-	//		if (movement_axis == axis::x) {
-	//			exit_move.x = calc_left_exit_move(other_box);
-	//		}
-	//		else if (movement_axis == axis::y) {
-	//			exit_move.y = calc_top_exit_move(other_box);
-	//		}
-	//		else {
-	//			exit_move.x = calc_left_exit_move(other_box);
-	//			exit_move.y = calc_top_exit_move(other_box);
-	//		}
-	//		break;
-
-	//	case collision_cases::top_edge:
-	//		exit_move.y = calc_top_exit_move(other_box);
-	//		break;
-
-	//	case collision_cases::top_right_corner:
-	//		if (movement_axis == axis::x) {
-	//			exit_move.x = calc_right_exit_move(other_box);
-	//		}
-	//		else if (movement_axis == axis::y) {
-	//			exit_move.y = calc_top_exit_move(other_box);
-	//		}
-	//		else {
-	//			exit_move.x = calc_right_exit_move(other_box);
-	//			exit_move.y = calc_top_exit_move(other_box);
-	//		}
-	//		break;
-
-	//	case collision_cases::left_edge:
-	//		exit_move.x = calc_left_exit_move(other_box);
-	//		break;
-
-	//	case collision_cases::right_edge:
-	//		exit_move.x = calc_right_exit_move(other_box);
-	//		break;
-
-	//	case collision_cases::bottom_left_corner:
-	//		if (movement_axis == axis::x) {
-	//			exit_move.x = calc_left_exit_move(other_box);
-	//		}
-	//		else if (movement_axis == axis::y) {
-	//			exit_move.y = calc_bottom_exit_move(other_box);
-	//		}
-	//		else {
-	//			exit_move.x = calc_left_exit_move(other_box);
-	//			exit_move.y = calc_bottom_exit_move(other_box);
-	//		}
-	//		break;
-
-	//	case collision_cases::bottom_edge:
-	//		exit_move.y = calc_bottom_exit_move(other_box);
-	//		break;
-
-	//	case collision_cases::bottom_right_corner:
-	//		if (movement_axis == axis::x) {
-	//			exit_move.x = calc_right_exit_move(other_box);
-	//		}
-	//		else if (movement_axis == axis::y) {
-	//			exit_move.y = calc_bottom_exit_move(other_box);
-	//		}
-	//		else {
-	//			exit_move.x = calc_right_exit_move(other_box);
-	//			exit_move.y = calc_bottom_exit_move(other_box);
-	//		}
-	//		break;
-
-	//	case collision_cases::inside: // uh oh
-	//		break;
-	//	};
-
-	//	//// hacky fix
-	//	//if (movement_axis == axis::both && (exit_move.x == 0 || exit_move.y == 0)) {
-	//	//	exit_move = glm::vec2(0.0f, 0.0f);
-	//	//}
-	//	if (name == "player")
-	//		std::cout << "exit_move: " << exit_move.x << ", " << exit_move.y << std::endl;
-
-	//	collision_events.push(other_box->collision_event(exit_move, (int)current_case));
-	//}
-
-	//return exit_move;
 }
 
 glm::vec2 Collision_Box::collide(Collision_Box* other_box, glm::vec2 real_previous_move) { // for testing

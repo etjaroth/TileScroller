@@ -74,8 +74,6 @@ glm::ivec2 Spritesheet::get_sprite_coords(int index) {
 	r.x = index % (tex_spritesheet_size.x / tex_sprite_size.x);
 	r.y = index / (tex_spritesheet_size.x / tex_sprite_size.x);
 
-	//std::cout << index << "%" << (tex_spritesheet_size.x / tex_sprite_size.x) <<" -> (" << r.x << ", " << r.y << ")" << std::endl;
-
 	return r;
 }
 

@@ -29,7 +29,6 @@ void Sprite::set_depth(float d) {
 
 void Sprite::change_depth(float d) {
 	depth += d;
-	std::cout << depth << std::endl;
 	this->update_render_square_position();
 }
 

@@ -32,7 +32,7 @@ void Tileset::insert_tile(glm::ivec2 pos, int sprite) {
 			collision_map->insert(wall);*/
 
 			new_tile->activate();
-			new_tile->set_physics(1.0f, 0.0f, true);
+			new_tile->set_physics(0.0f, 0.0f, true);
 			new_tile->pin();
 			new_tile->name = "lava";
 			new_tile->set_collision_event(1);

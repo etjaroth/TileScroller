@@ -65,7 +65,7 @@ int main()
 	glEnable(GL_MULTISAMPLE);
 
 	// Rendering
-	const float camera_size = .05f;
+	const float camera_size = 1.05f;
 	Camera camera = Camera();
 	Shader spriteshader("Spriteshader.vert", "Spriteshader.frag");
 	camera.set_size(glm::vec2(camera_size));
@@ -92,7 +92,7 @@ int main()
 	player->set_depth(0.5f);
 	player->name = "player";
 	player->activate();
-	player->set_physics(0.1f, 1.0f, true);
+	player->set_physics(0.0f, 1.0f, true);
 
 	world.insert(player);
 
@@ -158,27 +158,13 @@ int main()
 
 		glm::vec2 mouse_world_pos = glm::vec2(inv_model * inv_view * inv_projection * (mouse_pos4));
 
-
-
 		// Do stuff based on input
 		if (!paused) {
-
-			std::cout << mouse_pos2.x << ", " << mouse_pos2.y << " -> " << mouse_world_pos.x << ", " << mouse_world_pos.y;
-
 			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-				//if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
 				world.write_tile(mouse_world_pos, palate);
-				//world.write_tile(player.get_pos(), palate);
-				/*for (int i = 1; i <= 10; ++i) {
-					world.write_tile(player.get_pos() + glm::vec2(i, 0), palate);
-					world.write_tile(player.get_pos() + glm::vec2(-i, 0), palate);
-					world.write_tile(player.get_pos() + glm::vec2(0, i), palate);
-					world.write_tile(player.get_pos() + glm::vec2(0, -i), palate);
-				}*/
 			}
 
 			move *= 1 - camera_size;
-			//move *= 0.1;
 			int flip = camera_size >= 1 ? 1 : -1;
 			move *= flip;
 
@@ -196,13 +182,9 @@ int main()
 				//player->set_velocity(glm::vec2(0.0f, -0.05f));
 			}
 
-			//std::cout << "\n";
 			// Move view
 			world.set_pos(player->get_pos() - scroller_offset);
 			camera.set_pos(camera_offset - player->get_pos());
-			//std::cout << player->get_pos().x << ", " << player->get_pos().y << std::endl;
-			//std::cout << player->get_velocity().x << ", " << player->get_velocity().y << std::endl;
-			std::cout << std::endl;
 		}
 
 		// Render

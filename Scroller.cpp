@@ -122,8 +122,6 @@ void Scroller::write_tile(glm::vec2 pos, int tile_type) {
 		h_pos = hash(pos + glm::vec2(0, 1.0f));
 		break;
 	}
-	
-	std::cout << " ==> " << h_pos.x << ", " << h_pos.y << " & " << pos.x << ", " << pos.y;
 
 	auto i = chunks.find(h_pos);
 	if (i != chunks.end()) {

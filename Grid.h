@@ -17,12 +17,10 @@ protected:
 		if (itr == grid.end()) {
 			grid.insert({ cell, std::vector<std::shared_ptr<T>>() }); // could invalidate itr
 			grid.find(cell)->second.push_back(item);
-			if (item->name == "player") { std::cout << "added player to empty cell" << std::endl; }
 		}
 		else {
 			if (std::find(itr->second.begin(), itr->second.end(), item) == itr->second.end()) { // prevent duplicates
 				itr->second.push_back(item);
-				if (item->name == "player") { std::cout << "added player" << std::endl; }
 			}
 		}
 	}

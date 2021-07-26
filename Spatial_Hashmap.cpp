@@ -1,16 +1,13 @@
 #include "Spatial_Hashmap.h"
 
 void Spatial_Hashmap::collide_cell(std::unordered_map<glm::ivec2, std::vector<std::shared_ptr<Collision_Box>>, ivec2_Hash_Function>::iterator cell) {
-	//std::cout << "collide cell: " << cell->second.size() << " items" << std::endl;
 	for (auto i = cell->second.begin(); i != cell->second.end(); ++i) {
 		for (auto j = std::next(i); j != cell->second.end(); ++j) {
 			if ((*i)->collide(&(**j)) != glm::vec2(0.0f)) {
-				//if ((*i)->name == "player") { std::cout << "&"; }
 				//(*i)->iterate();
 			}
 
 			if ((*j)->collide(&(**i)) != glm::vec2(0.0f)) {
-				//if ((*j)->name == "player") { std::cout << "*"; }
 				//(*j)->iterate();
 			}
 		}
@@ -32,8 +29,6 @@ void Spatial_Hashmap::insert(std::shared_ptr<Collision_Box> box) {
 		for (int y = br_cell.y; y <= tl_cell.y; ++y) {
 			insert_at_cell(box, glm::ivec2(x, y));
 			++i;
-
-			//if (box->name == "player") { std::cout << "(" << x << ", " << y << ")" << std::endl; }
 		}
 	}
 
@@ -41,15 +36,12 @@ void Spatial_Hashmap::insert(std::shared_ptr<Collision_Box> box) {
 }
 
 void Spatial_Hashmap::collide_all() {
-	//std::cout << "collide all: " << grid.size() << std::endl;
 	for (std::unordered_map<glm::ivec2, std::vector<std::shared_ptr<Collision_Box>>, vec2_Hash_Function, ivec2_Hash_Function>::iterator i = grid.begin(); i != grid.end(); ++i) {
 		collide_cell(i);
 	}
 }
 
 void Spatial_Hashmap::iterate_all() {
-	int p = 0;
-
 	for (auto cell_itr = grid.begin(); cell_itr != grid.end(); ++cell_itr) {
 		for (auto item_itr = cell_itr->second.begin(); item_itr != cell_itr->second.end();) {
 			
@@ -65,7 +57,6 @@ void Spatial_Hashmap::iterate_all() {
 			}
 			else {
 				(*item_itr)->iterate();
-				//if ((*item_itr)->name == "player") { ++p; std::cout << "world iterate"; }
 				++item_itr;
 			}
 		}
@@ -73,9 +64,5 @@ void Spatial_Hashmap::iterate_all() {
 
 	for (auto i = insert_queue.begin(); i != insert_queue.end(); ++i) {
 		insert(*i);
-		//(*i)->iterate();
-	}
-	if (p > 3) {
-		//std::cout << " | " << p << std::endl;
 	}
 }
