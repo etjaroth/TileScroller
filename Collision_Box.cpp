@@ -52,11 +52,11 @@ void Collision_Box::iterate() {
 		if (!pinned) {
 
 			if (name == "player")
-				std::cout << "From " << velocity.x << ", " << velocity.y;
+				//std::cout << "From " << velocity.x << ", " << velocity.y;
 
 			//change_velocity(cevent->get_velocity());
 			if (name == "player") {
-				std::cout << " to " << velocity.x << ", " << velocity.y << " <== " << cevent->get_velocity().x << ", " << cevent->get_velocity().y << std::endl;
+				//std::cout << " to " << velocity.x << ", " << velocity.y << " <== " << cevent->get_velocity().x << ", " << cevent->get_velocity().y << std::endl;
 			}
 
 			change_pos(cevent->get_forced_move());
@@ -286,7 +286,7 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 			const float percent = 0.2f; // usually 20% to 80%
 			glm::vec2 correction = penetration_depth / (get_inverse_mass() + other_box->get_inverse_mass()) * percent * n;
 			//correction = penetration_depth * n;
-			if (name == "player") { std::cout << "pen-depth: " << penetration_depth << " -> " << correction.x << ", " << correction.y << std::endl; }
+			//if (name == "player") { std::cout << "pen-depth: " << penetration_depth << " -> " << correction.x << ", " << correction.y << std::endl; }
 			//A.position -= A.inv_mass * correction;
 			//B.position += B.inv_mass * correction;
 			cinfo->force_move(get_inverse_mass() * correction);

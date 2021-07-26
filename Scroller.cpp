@@ -84,28 +84,47 @@ void Scroller::save() {
 
 void Scroller::write_tile(glm::vec2 pos, int tile_type) {
 	glm::ivec2 h_pos;
-	if (glm::ivec2(pos) == glm::ivec2(0)) {
-		return;
-	}
-	if (pos.x > 0) {
-		if (pos.y > 0) { // Q1
-			h_pos = hash(pos + glm::vec2(0, 0)) + glm::ivec2(0, 1);
+	//if (glm::ivec2(pos) == glm::ivec2(0)) {
+		//return;
+	//}
+
+	enum quadrent { q1 = 1, q2, q3, q4 };
+	quadrent quad = q1;
+
+	if (pos.x >= 0) {
+		if (pos.y >= 0) { // Q1
+			quad = q1;
 		}
 		else if (pos.y < 0) { // Q4
-			h_pos = hash(pos + glm::vec2(0, 1.0f));
+			quad = q4;
 		}
 	}
-	else if (pos.x < 0) {
-		if (pos.y > 0) { // Q2
-			h_pos = hash(pos + glm::vec2(1, 0)) + glm::ivec2(-1, 1);
+	else if (pos.x <= 0) {
+		if (pos.y >= 0) { // Q2
+			quad = q2;
 		}
 		else if (pos.y < 0) { // Q3
-			h_pos = hash(pos + glm::vec2(1, 1)) + glm::ivec2(-1, 0);
+			quad = q3;
 		}
 	}
 
-	//h_pos = hash(pos);
+	switch (quad) {
+	case q1:
+		h_pos = hash(pos + glm::vec2(0, 0)) + glm::ivec2(0, 1);
+		break;
+	case q2:
+		h_pos = hash(pos + glm::vec2(1, 0)) + glm::ivec2(-1, 1);
+		break;
+	case q3:
+		h_pos = hash(pos + glm::vec2(1, 1)) + glm::ivec2(-1, 0);
+		break;
+	case q4:
+		h_pos = hash(pos + glm::vec2(0, 1.0f));
+		break;
+	}
 	
+	std::cout << " ==> " << h_pos.x << ", " << h_pos.y << " & " << pos.x << ", " << pos.y;
+
 	auto i = chunks.find(h_pos);
 	if (i != chunks.end()) {
 		i->second->write_tile(pos, tile_type);

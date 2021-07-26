@@ -5,12 +5,12 @@ void Spatial_Hashmap::collide_cell(std::unordered_map<glm::ivec2, std::vector<st
 	for (auto i = cell->second.begin(); i != cell->second.end(); ++i) {
 		for (auto j = std::next(i); j != cell->second.end(); ++j) {
 			if ((*i)->collide(&(**j)) != glm::vec2(0.0f)) {
-				if ((*i)->name == "player") { std::cout << "&"; }
+				//if ((*i)->name == "player") { std::cout << "&"; }
 				//(*i)->iterate();
 			}
 
 			if ((*j)->collide(&(**i)) != glm::vec2(0.0f)) {
-				if ((*j)->name == "player") { std::cout << "*"; }
+				//if ((*j)->name == "player") { std::cout << "*"; }
 				//(*j)->iterate();
 			}
 		}
@@ -65,7 +65,7 @@ void Spatial_Hashmap::iterate_all() {
 			}
 			else {
 				(*item_itr)->iterate();
-				if ((*item_itr)->name == "player") { ++p; std::cout << "world iterate"; }
+				//if ((*item_itr)->name == "player") { ++p; std::cout << "world iterate"; }
 				++item_itr;
 			}
 		}
@@ -76,6 +76,6 @@ void Spatial_Hashmap::iterate_all() {
 		//(*i)->iterate();
 	}
 	if (p > 3) {
-		std::cout << " | " << p << std::endl;
+		//std::cout << " | " << p << std::endl;
 	}
 }

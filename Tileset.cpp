@@ -170,6 +170,23 @@ void Tileset::generate_tiles(glm::ivec2 start, glm::ivec2 end) {
 }
 
 void Tileset::write_tile(glm::vec2 pos, int tile_type) {
+	if (pos.x >= 0) {
+		if (pos.y >= 0) { // Q1
+			pos += glm::vec2(0, 1);
+		}
+		else if (pos.y <= 0) { // Q4
+			pos += glm::vec2(0);
+		}
+	}
+	else if (pos.x <= 0) {
+		if (pos.y >= 0) { // Q2
+			pos += glm::vec2(-1, 1);
+		}
+		else if (pos.y <= 0) { // Q3
+			pos += glm::vec2(-1, 0);
+		}
+	}
+
 	glm::ivec2 write_pos = glm::ivec2(pos);
 	insert_tile(write_pos, tile_type);
 	save();
