@@ -58,6 +58,9 @@ void Spatial_Hashmap::iterate_all() {
 				}
 				item_itr = cell_itr->second.erase(item_itr);
 			}
+			else if (!(*item_itr)->is_active()) { // only active items need to be stored
+				item_itr = cell_itr->second.erase(item_itr);
+			}
 			else {
 				if (iterated_items.find((*item_itr)) == iterated_items.end()) {
 					(*item_itr)->iterate();

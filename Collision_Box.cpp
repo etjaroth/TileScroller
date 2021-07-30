@@ -330,6 +330,10 @@ void Collision_Box::deactivate() {
 	active = false;
 }
 
+bool Collision_Box::is_active() {
+	return active;
+}
+
 void Collision_Box::set_collision_event(int collision_event) {
 	//my_collision_event = std::make_shared<Collision_Info>();
 	switch (collision_event) {

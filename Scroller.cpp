@@ -93,9 +93,6 @@ void Scroller::save() {
 
 void Scroller::write_tile(glm::vec2 pos, int tile_type) {
 	glm::ivec2 h_pos;
-	//if (glm::ivec2(pos) == glm::ivec2(0)) {
-		//return;
-	//}
 
 	enum quadrent { q1 = 1, q2, q3, q4 };
 	quadrent quad = q1;

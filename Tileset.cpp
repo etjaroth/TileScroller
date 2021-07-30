@@ -14,10 +14,12 @@ void Tileset::insert_tile(glm::ivec2 pos, int sprite) {
 		return;
 	}
 
-	auto i = tileset.find(pos);
+	std::unordered_map<glm::ivec2, std::shared_ptr<Entity>, ivec2_Hash_Function>::iterator i = tileset.find(pos);
 	if (i != tileset.end()) {
-		//insert_tile(pos, sprite);
-		i->second->set_sprite(sprite);
+		i->second->deactivate(); // removes it from the spatial hashmap
+		tileset.erase(i);
+		insert_tile(pos, sprite);
+		//i->second->set_sprite(sprite);
 	}
 	else {
 		std::shared_ptr<Entity> new_tile = std::make_shared<Entity>(&batch, sprite, glm::vec2(pos), glm::vec2(1.0f));

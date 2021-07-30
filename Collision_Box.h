@@ -63,6 +63,7 @@ public:
 
 	void activate();
 	void deactivate();
+	bool is_active();
 	void set_collision_event(int collision_event);
 	
 	void pin() { pinned = true; mass_reciprocal = 0; }
