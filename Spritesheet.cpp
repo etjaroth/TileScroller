@@ -34,7 +34,10 @@ void Spritesheet::load_spritesheet(std::string filepath) {
 	glGenTextures(1, &texture);
 	glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
 	glBindTexture(GL_TEXTURE_2D, texture); // using texture
-
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
@@ -71,8 +74,11 @@ int Spritesheet::get_sprite_index(int x_index, int y_index) {
 
 glm::ivec2 Spritesheet::get_sprite_coords(int index) {
 	glm::ivec2 r;
-	r.x = index % (tex_spritesheet_size.x / tex_sprite_size.x);
-	r.y = index / (tex_spritesheet_size.x / tex_sprite_size.x);
+
+	int row_size = tex_spritesheet_size.x / tex_sprite_size.x;
+
+	r.x = index % row_size;
+	r.y = index / row_size;
 
 	return r;
 }
@@ -124,6 +130,9 @@ glm::vec2 Spritesheet::get_sprite_pos(int index) {
 
 glm::vec2 Spritesheet::get_sprite_pos(int x_index, int y_index) {
 	glm::vec2 r = sprite_size * glm::vec2(x_index, y_index);
+
+	r.y = 1.0f - r.y;
+
 	return r;
 }
 

@@ -82,7 +82,7 @@ void Sprite::set_sprite(int index) {
 	render_square[2].tex_coords = spritesheet->get_spritesheet()->get_sprite_bottom_left(index);
 	render_square[3].tex_coords = spritesheet->get_spritesheet()->get_sprite_bottom_right(index);
 
-	spritesheet->refresh_vertices();
+ 	spritesheet->refresh_vertices();
 }
 
 void Sprite::set_sprite(int x_index, int y_index) {

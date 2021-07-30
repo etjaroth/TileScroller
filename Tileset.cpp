@@ -27,12 +27,6 @@ void Tileset::insert_tile(glm::ivec2 pos, int sprite) {
 		tileset.insert({ pos, new_tile });
 		
 		if (sprite == 4) { // lava
-			//std::shared_ptr<Collision_Box> wall = std::make_shared<Collision_Box>(glm::vec2(pos), glm::vec2(1.0f));
-			/*wall->activate();
-			wall->name = "lava";
-			wall->set_collision_event(1);
-			collision_map->insert(wall);*/
-
 			new_tile->activate();
 			new_tile->set_physics(0.0f, 0.0f, true);
 			new_tile->pin();
