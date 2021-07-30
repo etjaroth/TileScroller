@@ -261,11 +261,9 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 			/*A.velocity -= 1 / A.mass * impulse;
 			B.velocity += 1 / B.mass * impulse;*/
 
-
 			local_velocity = -get_inverse_mass() * impulse;
 			cinfo->set_velocity(local_velocity);
 			change_velocity(local_velocity);
-
 
 			// Correct position (fixes sinking and jittering)
 			const float percent = 0.3f; // usually 20% to 80%
@@ -274,7 +272,6 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 			//B.position += B.inv_mass * correction;
 			cinfo->force_move(get_inverse_mass() * correction);
 		}
-
 
 		collision_events.push(cinfo);
 	}

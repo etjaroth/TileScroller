@@ -21,8 +21,17 @@ void Scroller::update_chunks() {
 		last_hash_pos = current_hash_pos;
 		glm::ivec2 end_pos = hash(get_bottom_right());
 
+		const int border = 10;
 		for (int x = current_hash_pos.x; x < end_pos.x; ++x) {
 			for (int y = end_pos.y; y < current_hash_pos.y; ++y) {
+				if (x > border || x < -border) {
+					continue;
+				}
+				if (y > border || y < -border) {
+					continue;
+				}
+
+
 				points.insert(glm::ivec2(x, y));
 			}
 		}

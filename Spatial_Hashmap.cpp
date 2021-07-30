@@ -42,6 +42,9 @@ void Spatial_Hashmap::collide_all() {
 }
 
 void Spatial_Hashmap::iterate_all() {
+	std::set<std::shared_ptr<Collision_Box>> iterated_items; // Items can be in more than one cell, so we need to prevent them from being iterated twice
+
+
 	for (auto cell_itr = grid.begin(); cell_itr != grid.end(); ++cell_itr) {
 		for (auto item_itr = cell_itr->second.begin(); item_itr != cell_itr->second.end();) {
 			
@@ -56,7 +59,11 @@ void Spatial_Hashmap::iterate_all() {
 				item_itr = cell_itr->second.erase(item_itr);
 			}
 			else {
-				(*item_itr)->iterate();
+				if (iterated_items.find((*item_itr)) == iterated_items.end()) {
+					(*item_itr)->iterate();
+					iterated_items.insert((*item_itr));
+				}
+				
 				++item_itr;
 			}
 		}
