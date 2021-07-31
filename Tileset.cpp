@@ -8,29 +8,47 @@ Tileset::Tileset(const char* filepath, glm::ivec2 tilesize, Spatial_Hashmap* spa
 	collision_map = spatial_hashmap;
 }
 
+const std::unordered_map<int, std::string> tilenames = { {0, "dirt"}, {1, "grass"}, {2, "sand"}, {3, "water"},
+	{4, "road"}, {5, "brown"}, {6, "grey"}, {7, "wood floor"},
+	{8, "tree leaves"}, {9, ""}, {10, ""}, {11, ""},
+	{12, ""}, {13, ""}, {14, ""}, {15, ""} };
+const std::set<int> wallsprites = {3, 5, 6, 8};
+
 void Tileset::insert_tile(glm::ivec2 pos, int sprite) {
-	if (pos.x > get_bottom_right().x || pos.x < get_top_left().x || pos.y < get_bottom_right().y || pos.y > get_top_left().y) {
-		std::cout << "Tile out of range!" << (pos.x > get_bottom_right().x) << (pos.x < get_top_left().x) << (pos.y < get_bottom_right().y) << (pos.y > get_top_left().y) << std::endl;
+	if (pos.x > get_bottom_right( ).x || pos.x < get_top_left().x || pos.y < get_bottom_right().y || pos.y > get_top_left().y) {
+		std::cout << "Tile out of range!" << std::endl;
 		return;
 	}
 
 	std::unordered_map<glm::ivec2, std::shared_ptr<Entity>, ivec2_Hash_Function>::iterator i = tileset.find(pos);
 	if (i != tileset.end()) {
+
+
+		//std::cout << 0;
+
+
 		i->second->deactivate(); // removes it from the spatial hashmap
 		tileset.erase(i);
 		insert_tile(pos, sprite);
-		//i->second->set_sprite(sprite);
 	}
 	else {
+		//std::cout << 1;
 		std::shared_ptr<Entity> new_tile = std::make_shared<Entity>(&batch, sprite, glm::vec2(pos), glm::vec2(1.0f));
 		new_tile->set_depth(0.999f);
+		if (tilenames.find(sprite) != tilenames.end()) {
+			new_tile->name = tilenames.find(sprite)->second;
+		}
+		else {
+			new_tile->name = "unknown tile: " + std::to_string(sprite);
+		}
+
 		tileset.insert({ pos, new_tile });
-		
-		if (sprite == 4) { // lava
+
+		if (wallsprites.find(sprite) != wallsprites.end()) {
 			new_tile->activate();
 			new_tile->set_physics(0.0f, 0.0f, true);
 			new_tile->pin();
-			new_tile->name = "lava";
+			
 			new_tile->set_collision_event(1);
 			collision_map->insert(new_tile);
 		}
@@ -183,7 +201,6 @@ void Tileset::write_tile(glm::vec2 pos, int tile_type) {
 		}
 	}
 
-	glm::ivec2 write_pos = glm::ivec2(pos);
-	insert_tile(write_pos, tile_type);
+	insert_tile(glm::ivec2(pos), tile_type);
 	save();
 }

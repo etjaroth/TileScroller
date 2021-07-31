@@ -114,15 +114,17 @@ void Scroller::write_tile(glm::vec2 pos, int tile_type) {
 		}
 	}
 
+	
+
 	switch (quad) {
 	case q1:
-		h_pos = hash(pos + glm::vec2(0, 0)) + glm::ivec2(0, 1);
+		h_pos = hash(pos + glm::vec2(0, 1)) + glm::ivec2(0, 1);
 		break;
 	case q2:
-		h_pos = hash(pos + glm::vec2(1, 0)) + glm::ivec2(-1, 1);
+		h_pos = hash(pos + glm::vec2(0, 1)) + glm::ivec2(-1, 1);
 		break;
 	case q3:
-		h_pos = hash(pos + glm::vec2(1, 1)) + glm::ivec2(-1, 0);
+		h_pos = hash(pos + glm::vec2(0, 1)) + glm::ivec2(-1, 0);
 		break;
 	case q4:
 		h_pos = hash(pos + glm::vec2(0, 1.0f));

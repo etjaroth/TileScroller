@@ -11,6 +11,9 @@ Sprite::Sprite(Render_Batch* sheet, glm::ivec2 sprite, glm::vec2 pos, glm::vec2 
 	update_render_square_position();
 }
 
+Sprite::~Sprite() {
+	
+}
 
 void Sprite::set_pos(glm::vec2 new_pos) {
 	Box::set_pos(new_pos);
@@ -43,14 +46,6 @@ void Sprite::update_render_square_position() {
 	spritesheet->refresh_vertices();
 }
 
-void Sprite::update_indices() {
-	for (int i = 0; i < 6; ++i) {
-		element_indicies[i] += 4 * storeage_token;
-	}
-
-	spritesheet->refresh_vertices();
-}
-
 
 int Sprite::get_sprite_index() {
 	return sprite_index;
@@ -60,14 +55,12 @@ int Sprite::get_sprite_index() {
 void Sprite::set_batch(Render_Batch* batch, int index) {
 	spritesheet = batch;
 	storeage_token = batch->store_vertices(render_square, 4, element_indicies, 6);
-	update_indices();
 	set_sprite(index);
 }
 
 void Sprite::set_batch(Render_Batch* batch, glm::ivec2 index) {
 	spritesheet = batch;
 	storeage_token = batch->store_vertices(render_square, 4, element_indicies, 6);
-	update_indices();
 	set_sprite(index.x, index.y);
 }
 

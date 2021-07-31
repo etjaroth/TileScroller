@@ -65,7 +65,7 @@ int main()
 	glEnable(GL_MULTISAMPLE);
 
 	// Rendering
-	const float camera_size = 1.05f;
+	const float camera_size = .05f;
 	Camera camera = Camera();
 	Shader spriteshader("Spriteshader.vert", "Spriteshader.frag");
 	camera.set_size(glm::vec2(camera_size));
@@ -179,7 +179,6 @@ int main()
 			//player->set_velocity(0.0f* player->get_velocity());
 			if (glm::length(player->get_velocity()) < 0.00001f) {
 				player->set_velocity(glm::vec2(0.0f));
-				//player->set_velocity(glm::vec2(0.0f, -0.05f));
 			}
 
 			// Move view

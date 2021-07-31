@@ -23,11 +23,11 @@ protected:
 
 //protected:
 	void update_render_square_position();
-	void update_indices();
 
 public:
 	Sprite(Render_Batch* sheet, int sprite, glm::vec2 pos, glm::vec2 size);
 	Sprite(Render_Batch* sheet, glm::ivec2 sprite, glm::vec2 pos, glm::vec2 size);
+	~Sprite();
 
 	void set_pos(glm::vec2 new_pos) override;
 	void set_size(glm::vec2 new_size) override;

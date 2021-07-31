@@ -29,6 +29,7 @@ void Render_Batch::render() {
 		// Convert batch to vector
 		std::vector<Vertex> render_data;
 		std::vector<unsigned int> indices;
+		unsigned int base_index = 0;
 		for (auto itr = batch.begin(); itr != batch.end(); itr++) {
 			// Copy verticies
 			for (int i = 0; i < itr->second.data_size; ++i) {
@@ -36,8 +37,9 @@ void Render_Batch::render() {
 			}
 			// Copy indices
 			for (int i = 0; i < itr->second.indices_size; ++i) {
-				indices.push_back(itr->second.indices[i]);
+				indices.push_back(itr->second.indices[i] + base_index);
 			}
+			base_index += itr->second.data_size;
 		}
 
 		// send data to graphics card
@@ -54,7 +56,6 @@ void Render_Batch::render() {
 	}
 
 	if (!batch.empty()) {
-		
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
