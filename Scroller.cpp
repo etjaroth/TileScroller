@@ -56,7 +56,7 @@ glm::ivec2 Scroller::hash(glm::ivec2 coord) {
 	return coord / glm::ivec2(chunk_size);
 }
 
-Scroller::Scroller(glm::vec2 pos, glm::vec2 size, std::string file_path, glm::ivec2 tile_size) : Box(pos, size), spatial_hashmap(glm::vec2(10.0f)) {
+Scroller::Scroller(glm::vec2 pos, glm::vec2 size, std::string file_path, glm::ivec2 tile_size) : Box(pos, size), spatial_hashmap(glm::vec2(2.0f)) {
 	filepath = file_path;
 	tilesize = tile_size;
 

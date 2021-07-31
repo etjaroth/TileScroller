@@ -162,6 +162,9 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 	if (this == other_box) {
 		return glm::vec2(0.0f);
 	}
+	if (get_inverse_mass() == 0 && other_box->get_inverse_mass() == 0) {
+		return glm::vec2(0.0f);
+	}
 
 	// Check if collision happened and calculate collision normal and collision
 	bool collision = false;
@@ -223,13 +226,15 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 
 	}
 
-	glm::vec2 local_velocity = glm::vec2(0.0f);
+	glm::vec2 local_velocity_a = glm::vec2(0.0f);
+	glm::vec2 local_velocity_b = glm::vec2(0.0f);
 	if (collision) {
 
 		// Resolve collision
 		//////////////////////////////////////
 
-		std::shared_ptr<Collision_Info> cinfo = other_box->collision_event();
+		std::shared_ptr<Collision_Info> cinfo_a = other_box->collision_event();
+		std::shared_ptr<Collision_Info> cinfo_b = collision_event();
 
 		if (is_solid()) {
 			// Calculate relative velocity
@@ -239,21 +244,16 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 			float velAlongNormal = glm::dot(relative_velocity, normal);
 
 			// Do not resolve if velocities are separating
-			if (velAlongNormal < 0.0f)
+			if (velAlongNormal < 0.0f) {
 				return glm::vec2(0.0f);
+			}
 
 			// Calculate restitution
 			float elasticity = std::min(get_elasticity(), other_box->get_elasticity());
 
 			// Calculate impulse scalar
 			float j = -(1.0f + elasticity) * velAlongNormal;
-			if ((get_inverse_mass() + other_box->get_inverse_mass()) != 0) {
-				j = j / (get_inverse_mass() + other_box->get_inverse_mass());
-			}
-			else {
-				j = 0;
-
-			}
+			j = j / (get_inverse_mass() + other_box->get_inverse_mass());
 
 			// Apply impulse
 			glm::vec2 impulse = j * normal;
@@ -261,21 +261,30 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 			/*A.velocity -= 1 / A.mass * impulse;
 			B.velocity += 1 / B.mass * impulse;*/
 
-			local_velocity = -get_inverse_mass() * impulse;
-			cinfo->set_velocity(local_velocity);
-			change_velocity(local_velocity);
+			// Set my velocity
+			local_velocity_a = -get_inverse_mass() * impulse;
+			//cinfo_a->set_velocity(local_velocity_a);
+			change_velocity(local_velocity_a);
+
+			// Set other velocity
+			local_velocity_b = other_box->get_inverse_mass() * impulse;
+			//cinfo_b->set_velocity(local_velocity_b);
+			other_box->change_velocity(local_velocity_b);
 
 			// Correct position (fixes sinking and jittering)
 			const float percent = 0.3f; // usually 20% to 80%
 			glm::vec2 correction = penetration_depth / (get_inverse_mass() + other_box->get_inverse_mass()) * percent * n;
 			//A.position -= A.inv_mass * correction;
 			//B.position += B.inv_mass * correction;
-			cinfo->force_move(get_inverse_mass() * correction);
+
+			cinfo_a->force_move(get_inverse_mass() * correction);
+			cinfo_b->force_move(-1 * other_box->get_inverse_mass() * correction);
 		}
 
-		collision_events.push(cinfo);
+		collision_events.push(cinfo_a);
+		other_box->push_collision_event(cinfo_b);
 	}
-	return local_velocity;
+	return local_velocity_a;
 }
 
 glm::vec2 Collision_Box::collide(Collision_Box* other_box, glm::vec2 real_previous_move) { // for testing
@@ -316,6 +325,10 @@ std::shared_ptr<Collision_Info> Collision_Box::pop_collision_event() {
 	else {
 		return std::make_shared<Collision_Info>();
 	}
+}
+
+void Collision_Box::push_collision_event(std::shared_ptr<Collision_Info> cevent) {
+	collision_events.push(cevent);
 }
 
 bool Collision_Box::has_events() {

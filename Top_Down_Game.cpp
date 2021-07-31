@@ -65,7 +65,7 @@ int main()
 	glEnable(GL_MULTISAMPLE);
 
 	// Rendering
-	const float camera_size = .05f;
+	const float camera_size = 1.05f; 
 	Camera camera = Camera();
 	Shader spriteshader("Spriteshader.vert", "Spriteshader.frag");
 	camera.set_size(glm::vec2(camera_size));
@@ -162,6 +162,13 @@ int main()
 		if (!paused) {
 			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 				world.write_tile(mouse_world_pos, palate);
+				//const int pen_size = 5;
+				//for (int x = -pen_size; x < pen_size; ++x) {
+					//for (int y = -pen_size; y < pen_size; ++y) {
+						//world.write_tile(mouse_world_pos + glm::vec2(x, y), palate);
+					//}
+				//}
+
 			}
 
 			move *= 1 - camera_size;

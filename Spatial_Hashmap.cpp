@@ -3,13 +3,11 @@
 void Spatial_Hashmap::collide_cell(std::unordered_map<glm::ivec2, std::vector<std::shared_ptr<Collision_Box>>, ivec2_Hash_Function>::iterator cell) {
 	for (auto i = cell->second.begin(); i != cell->second.end(); ++i) {
 		for (auto j = std::next(i); j != cell->second.end(); ++j) {
-			if ((*i)->collide(&(**j)) != glm::vec2(0.0f)) {
-				//(*i)->iterate();
-			}
-
-			if ((*j)->collide(&(**i)) != glm::vec2(0.0f)) {
+			(*i)->collide(&(**j));
+			//(*j)->collide(&(**i));
+			//if ((*j)->collide(&(**i)) != glm::vec2(0.0f)) {
 				//(*j)->iterate();
-			}
+			//}
 		}
 	}
 }

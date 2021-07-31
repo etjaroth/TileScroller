@@ -59,6 +59,7 @@ public:
 	std::shared_ptr<Collision_Info> collision_event();
 	std::shared_ptr<Collision_Info> collision_event(glm::vec2 velocity, int i);
 	std::shared_ptr<Collision_Info> pop_collision_event();
+	void push_collision_event(std::shared_ptr<Collision_Info> cevent);
 	bool has_events();
 
 	void activate();
