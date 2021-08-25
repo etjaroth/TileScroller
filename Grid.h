@@ -1,6 +1,7 @@
 #pragma once
 #include "Box.h"
 #include <unordered_map>
+#include <set>
 #include "glm_Vector_Hash.h"
 
 template <typename T>
@@ -15,8 +16,7 @@ protected:
 	void insert_at_cell(std::shared_ptr<T> item, glm::ivec2 cell) {
 		auto itr = grid.find(cell);
 		if (itr == grid.end()) {
-			grid.insert({ cell, std::vector<std::shared_ptr<T>>() }); // could invalidate itr
-			grid.find(cell)->second.push_back(item);
+			grid.insert({ cell, std::vector<std::shared_ptr<T>>{item} });
 		}
 		else {
 			if (std::find(itr->second.begin(), itr->second.end(), item) == itr->second.end()) { // prevent duplicates

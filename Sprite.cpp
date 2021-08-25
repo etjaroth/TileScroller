@@ -1,14 +1,16 @@
 #include "Sprite.h"
 
 Sprite::Sprite(Render_Batch* sheet, int sprite, glm::vec2 pos, glm::vec2 size) : Box(pos, size) {
-	set_batch(sheet, sprite);
+	spritesheet = sheet;
 	update_render_square_position();
+	set_batch(sheet, sprite);
 }
 
 
 Sprite::Sprite(Render_Batch* sheet, glm::ivec2 sprite, glm::vec2 pos, glm::vec2 size) {
-	set_batch(sheet, sprite);
+	spritesheet = sheet;
 	update_render_square_position();
+	set_batch(sheet, sprite);
 }
 
 Sprite::~Sprite() {

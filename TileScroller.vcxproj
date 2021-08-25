@@ -147,11 +147,14 @@
     <ClCompile Include="..\..\..\Documents\cpplibs\lib\opengl\glad\src\glad.c" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision_Box.cpp" />
     <ClCompile Include="Collision_Info.cpp" />
     <ClCompile Include="Compute_Shader.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Menu_Page.cpp" />
     <ClCompile Include="Poisson_Discs.cpp" />
     <ClCompile Include="Render_Batch.cpp" />
     <ClCompile Include="Scroller.cpp" />
@@ -166,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision_Box.h" />
     <ClInclude Include="Collision_Info.h" />
@@ -173,6 +177,8 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="glm_Vector_Hash.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Menu_Page.h" />
     <ClInclude Include="Poisson_Discs.h" />
     <ClInclude Include="Render_Batch.h" />
     <ClInclude Include="Scroller.h" />
@@ -186,7 +192,8 @@
     <ClInclude Include="SSBO_Compute_Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Centershader.vert" />
+    <None Include="Menushader.frag" />
+    <None Include="Menushader.vert" />
     <None Include="Spriteshader.frag" />
     <None Include="Spriteshader.vert" />
   </ItemGroup>

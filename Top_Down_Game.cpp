@@ -13,13 +13,13 @@
 #include "Camera.h"
 #include "Tileset.h"
 #include "Scroller.h"
+#include "Menu.h"
 
 // Callbacks
 unsigned int screenx = 800;
 unsigned int screeny = 600;
+std::shared_ptr<Menu> menu;
 
-glm::vec2 mouse_pos2 = glm::vec2(0.0f, 0.0f);
-glm::vec4 mouse_pos4 = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 int palate = 0;
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void error_callback(int error, const char* description);
@@ -65,7 +65,10 @@ int main()
 	glEnable(GL_MULTISAMPLE);
 
 	// Rendering
-	const float camera_size = 1.05f; 
+	menu = std::make_shared<Menu>();
+	Shader menushader("Menushader.vert", "Menushader.frag");
+
+	const float camera_size = 1.05f;
 	Camera camera = Camera();
 	Shader spriteshader("Spriteshader.vert", "Spriteshader.frag");
 	camera.set_size(glm::vec2(camera_size));
@@ -73,9 +76,9 @@ int main()
 	glm::mat4 view = camera.get_view();
 	glm::mat4 projection = glm::scale(glm::mat4(1.0f), glm::vec3((float)screeny / (float)screenx, 1.0f, 1.0f));
 
-	glm::mat4 inv_model = glm::inverse(model);
-	glm::mat4 inv_view = glm::inverse(view);
-	glm::mat4 inv_projection = glm::inverse(projection);
+	menu->make_inverse_model(model);
+	menu->make_inverse_view(view);
+	menu->make_inverse_projection(projection);
 
 	spriteshader.set_mat4("model", model);
 	spriteshader.set_mat4("view", view);
@@ -105,103 +108,118 @@ int main()
 	bool paused = false;
 	bool pauseable = true;
 	while (!should_close) {
-		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+		glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
+		//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//Input
-		glm::vec2 move = glm::vec2(0.0f);
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // exit on escape
-			glfwSetWindowShouldClose(window, true);
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-			move.y += 1;
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-			move.y -= 1;
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-			move.x -= 1;
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-			move.x += 1;
-		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-			player->change_depth(0.05f);
-		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-			player->change_depth(-0.05f);
+		menu->press_buttons(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS, 
+			glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE);
+		switch (menu->get_state()) {
+		case Menu::Game_State::main_menu:
 
-		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-			world.save();
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && pauseable) {
-			paused = !paused;
-			pauseable = false;
-		}
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
-			pauseable = true;;
-		}
+			break;
+		case Menu::Game_State::gameplay:
 
-		if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
-			palate = 0;
-		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-			palate = 1;
-		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-			palate = 2;
-		if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
-			palate = 3;
-		if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
-			palate = 4;
-		if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
-			palate = 5;
-		if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
-			palate = 6;
-		if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS)
-			palate = 7;
-		if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
-			palate = 8;
-		if (glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS)
-			palate = 9;
+			//Input
+			glm::vec2 move = glm::vec2(0.0f);
+			if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // exit on escape
+				glfwSetWindowShouldClose(window, true);
+			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+				move.y += 1;
+			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+				move.y -= 1;
+			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+				move.x -= 1;
+			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+				move.x += 1;
+			if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+				player->change_depth(0.05f);
+			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+				player->change_depth(-0.05f);
 
-		glm::vec2 mouse_world_pos = glm::vec2(inv_model * inv_view * inv_projection * (mouse_pos4));
+			if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+				world.save();
+			if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && pauseable) {
+				paused = !paused;
+				pauseable = false;
+			}
+			if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
+				pauseable = true;;
+			}
 
-		// Do stuff based on input
-		if (!paused) {
-			if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-				world.write_tile(mouse_world_pos, palate);
-				//const int pen_size = 5;
-				//for (int x = -pen_size; x < pen_size; ++x) {
-					//for (int y = -pen_size; y < pen_size; ++y) {
-						//world.write_tile(mouse_world_pos + glm::vec2(x, y), palate);
+			if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+				palate = 0;
+			if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+				palate = 1;
+			if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+				palate = 2;
+			if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+				palate = 3;
+			if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+				palate = 4;
+			if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+				palate = 5;
+			if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
+				palate = 6;
+			if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS)
+				palate = 7;
+			if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
+				palate = 8;
+			if (glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS)
+				palate = 9;
+
+
+			// Do stuff based on input
+			if (!paused) {
+				if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+					world.write_tile(menu->get_mouse_world_pos(), palate);
+					//const int pen_size = 5;
+					//for (int x = -pen_size; x < pen_size; ++x) {
+						//for (int y = -pen_size; y < pen_size; ++y) {
+							//world.write_tile(mouse_world_pos + glm::vec2(x, y), palate);
+						//}
 					//}
-				//}
 
+				}
+
+				move *= 1 - camera_size;
+				int flip = camera_size >= 1 ? 1 : -1;
+				move *= flip;
+
+				if (glm::length(player->get_velocity()) < 0.01f) {
+					player->change_velocity(-move);
+				}
+
+				world.collide();
+				world.iterate();
+
+				player->set_velocity(0.5f * player->get_velocity());
+
+				if (glm::length(player->get_velocity()) < 0.00001f) {
+					player->set_velocity(glm::vec2(0.0f));
+				}
+
+				// Move view
+				world.set_pos(player->get_pos() - scroller_offset);
+				camera.set_pos(camera_offset - player->get_pos());
 			}
 
-			move *= 1 - camera_size;
-			int flip = camera_size >= 1 ? 1 : -1;
-			move *= flip;
+			// Render
+			spriteshader.use();
+			view = camera.get_view();
+			menu->make_inverse_view(view);
+			spriteshader.set_mat4("view", view);
 
-			if (glm::length(player->get_velocity()) < 0.01f) {
-				player->change_velocity(-move);
-			}
+			world.render();
+			pc_batch.render();
+			spriteshader.dontuse();
 
-			world.collide();
-			world.iterate();
-
-			player->set_velocity(0.5f * player->get_velocity());
-			//player->set_velocity(0.0f* player->get_velocity());
-			if (glm::length(player->get_velocity()) < 0.00001f) {
-				player->set_velocity(glm::vec2(0.0f));
-			}
-
-			// Move view
-			world.set_pos(player->get_pos() - scroller_offset);
-			camera.set_pos(camera_offset - player->get_pos());
+			break;
 		}
 
-		// Render
-		spriteshader.use();
-		view = camera.get_view();
-		inv_view = glm::inverse(view);
-		spriteshader.set_mat4("view", view);
-
-		world.render();
-		pc_batch.render();
-		spriteshader.dontuse();
+		menushader.use();
+		menu->render();
+		menushader.dontuse();
 
 		// hhh
 		int w, h;
@@ -244,8 +262,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 
 	ypos = -ypos;
 
-	mouse_pos4 = glm::vec4(xpos, ypos, 0.0f, 1.0f);
-	mouse_pos2 = glm::vec2(xpos, ypos);
+	//mouse_pos4 = glm::vec4(xpos, ypos, 0.0f, 1.0f);
+	//mouse_pos2 = glm::vec2(xpos, ypos);
+
+	menu->set_mouse_pos(glm::vec2(xpos, ypos));
 }
 
 

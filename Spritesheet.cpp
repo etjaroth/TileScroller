@@ -27,6 +27,11 @@ void Spritesheet::load_spritesheet(std::string filepath) {
 
 	stbi_set_flip_vertically_on_load(flip);
 	
+	if (filepath == "button_sprites.png") {
+		int i = 0;
+		++i;
+	}
+
 	int nrChannels;
 	const GLenum colortype = GL_RGBA;
 	unsigned char* data = stbi_load(filepath.c_str(), &tex_spritesheet_size.x, &tex_spritesheet_size.y, &nrChannels, 0);
@@ -42,7 +47,7 @@ void Spritesheet::load_spritesheet(std::string filepath) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, colortype, tex_spritesheet_size.x, tex_spritesheet_size.y, 0, colortype, GL_UNSIGNED_BYTE, data); // Create texture
-	glGenerateMipmap(GL_TEXTURE_2D); // lowers resolution for far away objects
+	//glGenerateMipmap(GL_TEXTURE_2D); // lowers resolution for far away objects
 	if (data) { // Error handling
 		glTexImage2D(GL_TEXTURE_2D, 0, colortype, tex_spritesheet_size.x, tex_spritesheet_size.y, 0, colortype, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);

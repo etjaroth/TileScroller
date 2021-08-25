@@ -49,6 +49,9 @@
     <Filter Include="Header Files\Grid">
       <UniqueIdentifier>{205f3a36-3f8b-4d61-8535-2abf7a9d7e2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Box\Menu">
+      <UniqueIdentifier>{c632b747-60fd-467d-9f53-496c7990bb43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Top_Down_Game.cpp">
@@ -99,11 +102,20 @@
     <ClCompile Include="Tileset.cpp">
       <Filter>Source Files\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="Ball.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Collision_Info.cpp">
       <Filter>Source Files\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Source Files\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\Box\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu_Page.cpp">
+      <Filter>Source Files\Box\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\Box\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +179,15 @@
     <ClInclude Include="Collision_Info.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu_Page.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Spriteshader.vert">
@@ -175,7 +196,10 @@
     <None Include="Spriteshader.frag">
       <Filter>Source Files\Rendering\Shaders\Shader_Files</Filter>
     </None>
-    <None Include="Centershader.vert">
+    <None Include="Menushader.vert">
+      <Filter>Source Files\Rendering\Shaders\Shader_Files</Filter>
+    </None>
+    <None Include="Menushader.frag">
       <Filter>Source Files\Rendering\Shaders\Shader_Files</Filter>
     </None>
   </ItemGroup>

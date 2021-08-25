@@ -12,11 +12,13 @@
 class Spatial_Hashmap : public Grid<Collision_Box>
 {
 	std::set<std::shared_ptr<Collision_Box>> insert_queue;
+	std::vector<std::shared_ptr<Collision_Box>> objects;
 	void collide_cell(std::unordered_map<glm::ivec2, std::vector<std::shared_ptr<Collision_Box>>, ivec2_Hash_Function>::iterator cell);
 
 public:
 	Spatial_Hashmap(glm::vec2 cell_dimensions) : Grid<Collision_Box>(cell_dimensions) {}
 	void insert(std::shared_ptr<Collision_Box> box);
+	void reinsert(std::shared_ptr<Collision_Box> box);
 	void iterate_all();
 	void collide_all();
 };
