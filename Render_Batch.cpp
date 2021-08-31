@@ -58,7 +58,7 @@ void Render_Batch::render() {
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		spritesheet->bind_texture();
+		spritesheet->bind();
 		glDrawElements(GL_TRIANGLES, indices_size, GL_UNSIGNED_INT, 0); // 
 		glBindVertexArray(0);
 	}

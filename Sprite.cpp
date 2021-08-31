@@ -13,6 +13,10 @@ Sprite::Sprite(Render_Batch* sheet, glm::ivec2 sprite, glm::vec2 pos, glm::vec2 
 	set_batch(sheet, sprite);
 }
 
+Sprite::Sprite(Render_Batch* sheet, int sprite, Box box) : Sprite(sheet, sprite, box.get_pos(), box.get_size()) {}
+
+Sprite::Sprite(Render_Batch* sheet, glm::ivec2 sprite, Box box) : Sprite(sheet, sprite, box.get_pos(), box.get_size()) {}
+
 Sprite::~Sprite() {
 	
 }

@@ -1,10 +1,11 @@
 #pragma once
 #include "opengl_libs.h"
-class Spritesheet
+#include "Texture.h"
+
+class Spritesheet : public Texture
 {
 	GLuint texture = 0;
 	glm::ivec2 spritesheet_size;
-	glm::ivec2 tex_spritesheet_size;
 	glm::ivec2 tex_sprite_size;
 
 	glm::vec2 sprite_size;
@@ -18,10 +19,6 @@ public:
 	~Spritesheet();
 
 	void load_spritesheet(std::string filepath);
-	void free_spritesheet();
-	bool is_loaded();
-
-	void bind_texture();
 
 	int get_sprite_index(int x_index, int y_index);
 	glm::ivec2 get_sprite_coords(int index);

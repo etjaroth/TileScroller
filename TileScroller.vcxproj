@@ -120,11 +120,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\Ethan\Documents\cpplibs\lib\FastNoise;C:\Users\Ethan\Documents\cpplibs\lib\opengl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc142-mtd.lib;freetyped.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,6 +153,8 @@
     <ClCompile Include="Collision_Box.cpp" />
     <ClCompile Include="Collision_Info.cpp" />
     <ClCompile Include="Compute_Shader.cpp" />
+    <ClCompile Include="Display_Char.cpp" />
+    <ClCompile Include="Display_Charset.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Menu_Page.cpp" />
@@ -163,6 +166,8 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Spritesheet.cpp" />
     <ClCompile Include="SSBO_Compute_Shader.cpp" />
+    <ClCompile Include="Text.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Tileset.cpp" />
     <ClCompile Include="Top_Down_Game.cpp" />
   </ItemGroup>
@@ -174,6 +179,8 @@
     <ClInclude Include="Collision_Box.h" />
     <ClInclude Include="Collision_Info.h" />
     <ClInclude Include="Compute_Shader.h" />
+    <ClInclude Include="Display_Char.h" />
+    <ClInclude Include="Display_Charset.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="glm_Vector_Hash.h" />
     <ClInclude Include="Grid.h" />
@@ -184,6 +191,8 @@
     <ClInclude Include="Scroller.h" />
     <ClInclude Include="Spatial_Hashmap.h" />
     <ClInclude Include="Spritesheet.h" />
+    <ClInclude Include="Text.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Tileset.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="opengl_libs.h" />

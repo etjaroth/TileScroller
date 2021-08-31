@@ -10,7 +10,7 @@ Menu::Menu() : sheet("button_sprites.png", glm::ivec2(16)) {
 	// Create menu pages
 		// Main Menu
 	pages.push_back({ &sheet });
-	pages[0].add_button(glm::vec2(-0.5f, 0.5f), glm::vec2(1.0f), Menu_Page::Menu_Actions::set_state_to_gameplay);
+	pages[0].add_button(glm::vec2(-0.75f, 0.75f), glm::vec2(1.5f, 1.0f), Menu_Page::Menu_Actions::set_state_to_gameplay);
 }
 
 void Menu::render() {

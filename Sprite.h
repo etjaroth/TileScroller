@@ -25,8 +25,13 @@ protected:
 	void update_render_square_position();
 
 public:
+	// From vectors
 	Sprite(Render_Batch* sheet, int sprite, glm::vec2 pos, glm::vec2 size);
 	Sprite(Render_Batch* sheet, glm::ivec2 sprite, glm::vec2 pos, glm::vec2 size);
+	// From Box
+	Sprite(Render_Batch* sheet, int sprite, Box box);
+	Sprite(Render_Batch* sheet, glm::ivec2 sprite, Box box);
+
 	~Sprite();
 
 	void set_pos(glm::vec2 new_pos) override;
