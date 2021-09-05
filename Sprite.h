@@ -45,4 +45,5 @@ public:
 	void set_batch(Render_Batch* batch, glm::ivec2 index);
 	void set_sprite(int index);
 	void set_sprite(int x_index, int y_index);
+	void set_custom_sprite(glm::vec2 pos, glm::vec2 size);
 };

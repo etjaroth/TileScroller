@@ -18,7 +18,7 @@ Sprite::Sprite(Render_Batch* sheet, int sprite, Box box) : Sprite(sheet, sprite,
 Sprite::Sprite(Render_Batch* sheet, glm::ivec2 sprite, Box box) : Sprite(sheet, sprite, box.get_pos(), box.get_size()) {}
 
 Sprite::~Sprite() {
-	
+
 }
 
 void Sprite::set_pos(glm::vec2 new_pos) {
@@ -64,6 +64,8 @@ void Sprite::set_batch(Render_Batch* batch, int index) {
 	set_sprite(index);
 }
 
+
+
 void Sprite::set_batch(Render_Batch* batch, glm::ivec2 index) {
 	spritesheet = batch;
 	storeage_token = batch->store_vertices(render_square, 4, element_indicies, 6);
@@ -81,13 +83,26 @@ void Sprite::set_sprite(int index) {
 	render_square[2].tex_coords = spritesheet->get_spritesheet()->get_sprite_bottom_left(index);
 	render_square[3].tex_coords = spritesheet->get_spritesheet()->get_sprite_bottom_right(index);
 
- 	spritesheet->refresh_vertices();
+	spritesheet->refresh_vertices();
 }
 
 void Sprite::set_sprite(int x_index, int y_index) {
 	sprite_index = spritesheet->get_spritesheet()->get_sprite_index(x_index, y_index);
 	sprite_coords = spritesheet->get_spritesheet()->get_sprite_pos(x_index, y_index);
 	sprite_size = spritesheet->get_spritesheet()->get_sprite_size();
+
+	render_square[0].tex_coords = sprite_coords;
+	render_square[1].tex_coords = sprite_coords + glm::vec2(sprite_size.x, 0.0f);
+	render_square[2].tex_coords = sprite_coords + glm::vec2(0.0f, -sprite_size.y);
+	render_square[3].tex_coords = sprite_coords + glm::vec2(sprite_size.x, -sprite_size.y);
+
+	spritesheet->refresh_vertices();
+}
+
+void Sprite::set_custom_sprite(glm::vec2 pos, glm::vec2 size) {
+	sprite_index = -1;
+	sprite_coords = pos;
+	sprite_size = size;
 
 	render_square[0].tex_coords = sprite_coords;
 	render_square[1].tex_coords = sprite_coords + glm::vec2(sprite_size.x, 0.0f);

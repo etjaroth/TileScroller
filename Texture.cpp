@@ -1,9 +1,17 @@
 #include "Texture.h"
 #include "stb_image.h"
 
+GLuint Texture::currently_bound_texture = 0;
+void Texture::auto_bind_texture() {
+	if (currently_bound_texture != texture) {
+		bind();
+	}
+}
+
 Texture::Texture() {}
 
-void Texture::generate_texture(glm::ivec2 size) {
+// data and data_size may be default arguments
+void Texture::generate_texture(glm::ivec2 size, void* data, unsigned int data_size) {
 	texture_dimensions = size;
 
 	if (is_loaded()) {
@@ -22,7 +30,7 @@ void Texture::generate_texture(glm::ivec2 size) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, colortype, texture_dimensions.x, texture_dimensions.y, 0, colortype, GL_UNSIGNED_BYTE, NULL); // Create texture
+	glTexImage2D(GL_TEXTURE_2D, 0, colortype, texture_dimensions.x, texture_dimensions.y, 0, colortype, GL_UNSIGNED_BYTE, data); // Create texture
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
@@ -70,6 +78,8 @@ bool Texture::is_loaded() {
 }
 
 void Texture::free() {
+	auto_bind_texture();
+
 	glDeleteTextures(1, &texture);
 	texture = 0;
 }
@@ -86,4 +96,39 @@ void Texture::unbind() {
 
 glm::ivec2 Texture::get_size() {
 	return texture_dimensions;
+}
+
+void Texture::set_texture_border_wrap(GLenum style) {
+	auto_bind_texture();
+
+	set_texture_border_wrap_x(style);
+	set_texture_border_wrap_y(style);
+}
+
+void Texture::set_texture_border_wrap_x(GLenum style) {
+	auto_bind_texture();
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, style);
+}
+
+void Texture::set_texture_border_wrap_y(GLenum style) {
+	auto_bind_texture();
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, style);
+}
+
+GLenum Texture::get_texture_border_wrap_x() {
+	auto_bind_texture();
+
+	GLint style;
+	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &style);
+	return (GLenum)style;
+}
+
+GLenum Texture::get_texture_border_wrap_y() {
+	auto_bind_texture();
+
+	GLint style;
+	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &style);
+	return (GLenum)style;
 }
