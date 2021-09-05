@@ -79,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)dependencies\cpplibs\lib\FastNoise;$(ProjectDir)dependencies\cpplibs\lib\opengl;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)dependencies\cpplibs\lib\opengl;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\..\cpplibs\lib\FastNoise;$(ProjectDir)..\..\cpplibs\lib\opengl;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\cpplibs\lib\opengl;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -145,7 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Documents\cpplibs\lib\opengl\glad\src\glad.c" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -156,6 +155,7 @@
     <ClCompile Include="Display_Char.cpp" />
     <ClCompile Include="Display_Charset.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="glad.c" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Menu_Page.cpp" />
     <ClCompile Include="Poisson_Discs.cpp" />
