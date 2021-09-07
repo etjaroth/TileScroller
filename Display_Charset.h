@@ -8,7 +8,6 @@ class Display_Charset
 {
 	Spritesheet charset;
 	Render_Batch display;
-	Texture spritesheet;
 
 	struct character {
 		char character;
@@ -25,6 +24,7 @@ class Display_Charset
 
 public:
 	Display_Charset();
+	void render();
 
 	Render_Batch* get_render_batch_ptr();
 	
@@ -35,4 +35,3 @@ public:
 	glm::ivec2 get_glyph_bearing(char c);
 	unsigned int get_advance(char c);
 };
-

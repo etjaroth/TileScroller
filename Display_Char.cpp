@@ -1,9 +1,12 @@
 #include "Display_Char.h"
 
-Display_Char::Display_Char(Display_Charset* charset, char c, glm::ivec2 pos, glm::ivec2 size)
-	: Sprite(charset->get_render_batch_ptr(), 0, pos, size) {
+Display_Char::Display_Char(Display_Charset* charset, char c, glm::vec2 pos, glm::vec2 size)
+	: Box(pos, size), Sprite(charset->get_render_batch_ptr(), Box(charset->get_sprite_pos(c), charset->get_sprite_size(c)), pos, size) {
+
 	display = charset;
-	set_char(c);
+	set_depth(-0.5f);
+	character = c;
+	//set_char(c);
 }
 
 void Display_Char::set_char(char c) {

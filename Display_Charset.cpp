@@ -8,8 +8,6 @@
 
 Display_Charset::Display_Charset() : charset(), display(&charset)
 {
-
-
 	FT_Library ft;
 
 	if (FT_Init_FreeType(&ft))
@@ -28,7 +26,7 @@ Display_Charset::Display_Charset() : charset(), display(&charset)
 
 	// load font as face
 	FT_Face face;
-	if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face)) {
+	if (FT_New_Face(ft, "C:\\Windows\\Fonts\\arial.ttf", 0, &face)) {
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 		exit(-1);
 	}
@@ -36,15 +34,9 @@ Display_Charset::Display_Charset() : charset(), display(&charset)
 		// set size to load glyphs as
 		FT_Set_Pixel_Sizes(face, 0, 48);
 
-		// disable byte-alignment restriction
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
 		// load first 128 characters of ASCII set
 		std::vector<std::vector<unsigned char>> vector2d;
-		for (int i = 0; i < 48; ++i) {
-			vector2d.push_back({});
-		}
-
+		glm::ivec2 texture_size = glm::ivec2(0);
 		for (unsigned char c = 0; c < 128; c++) {
 			// Load character glyph 
 			if (FT_Load_Char(face, c, FT_LOAD_RENDER))
@@ -53,22 +45,60 @@ Display_Charset::Display_Charset() : charset(), display(&charset)
 				continue;
 			}
 
+			glm::ivec2 glyph_size = glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows);
+
+			// Expand texture if needed
+			if (glyph_size.y > texture_size.y) {
+				unsigned int diffrence = glyph_size.y - texture_size.y;
+				for (int i = 0; i < diffrence; ++i) {
+					vector2d.push_back(std::vector<unsigned char>(texture_size.x, 0));
+				}
+				texture_size.y = glyph_size.y;
+			}
+
+			// Read glyph to texture
 			for (int y = 0; y < face->glyph->bitmap.rows; ++y) {
 				for (int x = 0; x < face->glyph->bitmap.width; ++x) {
-					vector2d[y].push_back((face->glyph->bitmap.buffer)[x * face->glyph->bitmap.width + y]); // treat as 2d array
+					int flip_glyph = vector2d.size() - 1 - y;
+					vector2d[flip_glyph].push_back((face->glyph->bitmap.buffer)[y * face->glyph->bitmap.width + x]); // treat as 2d array
 				}
 			}
+
+			// Create the pixels above the glyph
+			if (glyph_size.y < texture_size.y) {
+				for (int y = glyph_size.y; y < texture_size.y; ++y) {
+					for (int x = 0; x < glyph_size.x; ++x) {
+						int flip_glyph = vector2d.size() - 1 - y;
+						vector2d[flip_glyph].push_back(0);
+					}
+				}
+			}
+
+			texture_size.x += glyph_size.x;
 		}
 
+		//std::reverse(vector2d.begin(), vector2d.end());
+
 		// read 2D vector into 1D vector
-		std::vector<unsigned char> vector1d;
-		for (auto i = vector2d.begin(); i != vector2d.end(); ++i) {
-			for (auto j = i->begin(); j != i->end(); ++j) {
-				vector1d.push_back(*j);
+		int hhhh = texture_size.x * texture_size.y * 4;
+		std::vector<unsigned char> vector1d(hhhh); // 4 is for RGBA
+		for (int y = 0; y < vector2d.size(); ++y) {
+			for (int x = 0; x < vector2d[y].size(); ++x) {
+				const unsigned char greyscale_value = vector2d[y][x];
+				vector1d[(x + (y * texture_size.x)) * 4 + 0] = greyscale_value; // R
+				vector1d[(x + (y * texture_size.x)) * 4 + 1] = greyscale_value; // G
+				vector1d[(x + (y * texture_size.x)) * 4 + 2] = greyscale_value; // B
+				vector1d[(x + (y * texture_size.x)) * 4 + 3] = greyscale_value; // A
 			}
 		}
 
-		spritesheet.generate_texture(glm::ivec2(vector2d.size(), (vector2d[0]).size()), &vector1d, vector1d.size());
+		// disable byte-alignment restriction
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+		charset.generate_texture(glm::ivec2(vector2d[0].size(), vector2d.size()), &vector1d[0], vector1d.size());
+
+		// reenable byte-alignment restriction
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
 		// Define sprites (we needed to know the size of the texture before we did this)
 		float offset_x = 0.0f;
@@ -96,11 +126,11 @@ Display_Charset::Display_Charset() : charset(), display(&charset)
 			ch.character = c;
 
 			ch.sprite_pos = glm::vec2(offset_x, 1.0f);
-			offset_x += static_cast<float>(face->glyph->bitmap.width);
+			offset_x += static_cast<float>(face->glyph->bitmap.width) / static_cast<float>(texture_size.x);
 
 			ch.sprite_size = glm::vec2(
-				static_cast<float>(face->glyph->bitmap.width) / static_cast<float>(spritesheet.get_size().x),
-				static_cast<float>(face->glyph->bitmap.rows) / static_cast<float>(spritesheet.get_size().y));
+				static_cast<float>(face->glyph->bitmap.width) / static_cast<float>(charset.get_size().x),
+				static_cast<float>(face->glyph->bitmap.rows) / static_cast<float>(charset.get_size().y));
 
 			ch.glyph_size = glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows);
 			ch.glyph_bearing = glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
@@ -115,6 +145,10 @@ Display_Charset::Display_Charset() : charset(), display(&charset)
 	// destroy FreeType once we're finished
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
+}
+
+void Display_Charset::render() {
+	display.render();
 }
 
 Render_Batch* Display_Charset::get_render_batch_ptr() {

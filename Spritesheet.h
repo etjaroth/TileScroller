@@ -4,7 +4,7 @@
 
 class Spritesheet : public Texture
 {
-	GLuint texture = 0;
+	//GLuint texture = 0;
 	glm::ivec2 spritesheet_size;
 	glm::ivec2 tex_sprite_size;
 

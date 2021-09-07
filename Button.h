@@ -5,7 +5,7 @@
 class Button : virtual public Sprite
 {
 	enum class State {neutral=0, highlight=1, pressed=2, released=2};
-	State state = State::neutral;
+	State state;
 	bool button_pressed_this_frame = false;
 	bool button_released = false;
 	const int input_delay = 10;

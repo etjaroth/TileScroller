@@ -7,13 +7,13 @@
 #include FT_FREETYPE_H
 ;
 
-class Display_Char : public Sprite {
+class Display_Char : virtual public Sprite {
 private:
     Display_Charset* display;
     char character;
 
 public:
-    Display_Char(Display_Charset* charset, char c, glm::ivec2 pos, glm::ivec2 size);
+    Display_Char(Display_Charset* charset, char c, glm::vec2 pos, glm::vec2 size);
     
     void set_char(char c);
     char get_char();

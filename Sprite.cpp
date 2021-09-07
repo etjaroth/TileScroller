@@ -6,8 +6,15 @@ Sprite::Sprite(Render_Batch* sheet, int sprite, glm::vec2 pos, glm::vec2 size) :
 	set_batch(sheet, sprite);
 }
 
+Sprite::Sprite(Render_Batch* sheet, Box sprite, glm::vec2 pos, glm::vec2 size) : Box(pos, size) {
+	position;
+	dimensions;
+	spritesheet = sheet;
+	update_render_square_position();
+	set_batch(sheet, sprite);
+}
 
-Sprite::Sprite(Render_Batch* sheet, glm::ivec2 sprite, glm::vec2 pos, glm::vec2 size) {
+Sprite::Sprite(Render_Batch* sheet, glm::ivec2 sprite, glm::vec2 pos, glm::vec2 size) : Box(pos, size) {
 	spritesheet = sheet;
 	update_render_square_position();
 	set_batch(sheet, sprite);
@@ -64,7 +71,11 @@ void Sprite::set_batch(Render_Batch* batch, int index) {
 	set_sprite(index);
 }
 
-
+void Sprite::set_batch(Render_Batch* batch, Box index) {
+	spritesheet = batch;
+	storeage_token = batch->store_vertices(render_square, 4, element_indicies, 6);
+	set_custom_sprite(index.get_pos(), index.get_size());
+}
 
 void Sprite::set_batch(Render_Batch* batch, glm::ivec2 index) {
 	spritesheet = batch;
@@ -75,8 +86,13 @@ void Sprite::set_batch(Render_Batch* batch, glm::ivec2 index) {
 void Sprite::set_sprite(int index) {
 	sprite_index = index;
 
-	sprite_coords = spritesheet->get_spritesheet()->get_sprite_pos(index);
-	sprite_size = spritesheet->get_spritesheet()->get_sprite_size();
+	if (index == -1) { // code for custom sprite (ugly)
+		return;
+	}
+	else {
+		sprite_coords = spritesheet->get_spritesheet()->get_sprite_pos(index);
+		sprite_size = spritesheet->get_spritesheet()->get_sprite_size();
+	}
 
 	render_square[0].tex_coords = spritesheet->get_spritesheet()->get_sprite_top_left(index);
 	render_square[1].tex_coords = spritesheet->get_spritesheet()->get_sprite_top_right(index);

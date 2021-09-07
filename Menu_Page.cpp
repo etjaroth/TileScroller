@@ -1,16 +1,22 @@
 #include "Menu_Page.h"
 
-Menu_Page::Menu_Page(Spritesheet* sheet) : render_batch(sheet) {
+Menu_Page::Menu_Page(Spritesheet* sheet, Display_Charset* chset) : render_batch(sheet) {
 	spritesheet = sheet;
+	charset = chset;
 }
 
 void Menu_Page::render() {
 	render_batch.render();
+	charset->render();
 }
 
 void Menu_Page::add_button(glm::vec2 pos, glm::vec2 size, Menu_Actions action) {
 	buttons.push_back(std::make_shared<Button>(pos, size, &render_batch));
 	button_actions.push_back(action);
+}
+
+void Menu_Page::add_text(glm::vec2 pos, float size, std::string str) {
+	text.push_back(std::make_shared<Text>(charset, str, pos, size));
 }
 
 void Menu_Page::press_buttons(glm::vec2 coords, bool press, bool release) {

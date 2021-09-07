@@ -12,7 +12,7 @@ class Texture
 public:
 	Texture();
 
-	void generate_texture(glm::ivec2 size, void* data=NULL, unsigned int data_size=0);
+	void generate_texture(glm::ivec2 size, void* data=NULL, unsigned int data_size=0, GLenum colortype = GL_RGBA);
 	void load_texture(std::string filepath, bool flip);
 	bool is_loaded();
 	void free();
@@ -21,6 +21,7 @@ public:
 	void unbind();
 
 	glm::ivec2 get_size();
+	GLuint get_texture();
 
 	// opengl settings
 		// border_wrap
@@ -29,4 +30,8 @@ public:
 	void set_texture_border_wrap_y(GLenum style);
 	GLenum get_texture_border_wrap_x();
 	GLenum get_texture_border_wrap_y();
+
+	// Operators
+	friend bool operator==(const Texture& lhs, const Texture& rhs);
+	friend bool operator!=(const Texture& lhs, const Texture& rhs);
 };

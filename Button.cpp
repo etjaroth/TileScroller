@@ -1,5 +1,8 @@
 #include "Button.h"
-Button::Button(glm::vec2 pos, glm::vec2 size, Render_Batch* batch) : Box(pos, size), Sprite(batch, (int)state, pos, size) {
+Button::Button(glm::vec2 pos, glm::vec2 size, Render_Batch* batch) : 
+	Box(pos, size), 
+	Sprite(batch, 0/* this should be (int)state, but this is always called before state is initilized */, pos, size), 
+	state(State::neutral) {
 
 }
 

@@ -79,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\cpplibs\lib\FastNoise;$(ProjectDir)..\..\cpplibs\lib\opengl;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\..\cpplibs\lib\opengl;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Ethan\Documents\cpplibs\lib\FastNoise;C:\Users\Ethan\Documents\cpplibs\lib\opengl;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Ethan\Documents\cpplibs\lib\opengl;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -121,6 +121,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

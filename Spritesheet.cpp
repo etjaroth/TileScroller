@@ -100,9 +100,8 @@ glm::vec2 Spritesheet::get_sprite_size() {
 
 // Operators
 bool operator==(const Spritesheet& lhs, const Spritesheet& rhs) {
-	return lhs.texture == rhs.texture &&
+	return (Texture&)lhs == (Texture&)rhs &&
 		lhs.spritesheet_size == rhs.spritesheet_size &&
-		//lhs.tex_spritesheet_size == rhs.tex_spritesheet_size &&
 		lhs.tex_sprite_size == rhs.tex_sprite_size;
 }
 

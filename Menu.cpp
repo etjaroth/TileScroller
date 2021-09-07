@@ -1,6 +1,5 @@
 #include "Menu.h"
 Menu::Menu() : sheet("button_sprites.png", glm::ivec2(16)) {
-	mouse_pos = glm::vec2(0.0f);
 	inverse_model = glm::mat4(1.0f);
 	inverse_view = glm::mat4(1.0f);
 	inverse_projection = glm::mat4(1.0f);
@@ -9,8 +8,11 @@ Menu::Menu() : sheet("button_sprites.png", glm::ivec2(16)) {
 
 	// Create menu pages
 		// Main Menu
-	pages.push_back({ &sheet });
+	pages.push_back({ &sheet, &charset });
 	pages[0].add_button(glm::vec2(-0.75f, 0.75f), glm::vec2(1.5f, 1.0f), Menu_Page::Menu_Actions::set_state_to_gameplay);
+	pages[0].add_text(glm::vec2(-0.5f, 0.2f), 0.01f, "Start");
+
+	press_buttons(false, false); // set sprites so nothing looks weird if the mouse starts off screen
 }
 
 void Menu::render() {

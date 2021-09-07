@@ -11,7 +11,7 @@ void Texture::auto_bind_texture() {
 Texture::Texture() {}
 
 // data and data_size may be default arguments
-void Texture::generate_texture(glm::ivec2 size, void* data, unsigned int data_size) {
+void Texture::generate_texture(glm::ivec2 size, void* data, unsigned int data_size, GLenum colortype) {
 	texture_dimensions = size;
 
 	if (is_loaded()) {
@@ -19,7 +19,6 @@ void Texture::generate_texture(glm::ivec2 size, void* data, unsigned int data_si
 	}
 
 	int nrChannels;
-	const GLenum colortype = GL_RGBA;
 
 	glGenTextures(1, &texture);
 	bind();
@@ -98,6 +97,10 @@ glm::ivec2 Texture::get_size() {
 	return texture_dimensions;
 }
 
+GLuint Texture::get_texture() {
+	return texture;
+}
+
 void Texture::set_texture_border_wrap(GLenum style) {
 	auto_bind_texture();
 
@@ -131,4 +134,14 @@ GLenum Texture::get_texture_border_wrap_y() {
 	GLint style;
 	glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &style);
 	return (GLenum)style;
+}
+
+// Operators
+bool operator==(const Texture& lhs, const Texture& rhs) {
+	return lhs.texture == rhs.texture &&
+		lhs.texture_dimensions == rhs.texture_dimensions;
+}
+
+bool operator!=(const Texture& lhs, const Texture& rhs) {
+	return !(lhs == rhs);
 }

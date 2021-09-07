@@ -2,16 +2,21 @@
 #include "opengl_libs.h"
 #include <vector>
 #include "Menu_Page.h"
+#include "Display_Charset.h"
+#include "Text.h"
 
 class Menu
 {
 	// Mouse coordinates
-	glm::vec2 mouse_pos;
+	glm::vec2 mouse_pos = glm::vec2(1.5f); // offscreen
 	glm::mat4 inverse_model;
 	glm::mat4 inverse_view;
 	glm::mat4 inverse_projection;
 
 	Spritesheet sheet;
+
+	// Text
+	Display_Charset charset;
 
 public:
 	// State

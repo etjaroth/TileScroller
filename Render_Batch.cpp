@@ -52,6 +52,8 @@ void Render_Batch::render() {
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		std::cout << "Batch Size: " << render_data.size() << std::endl;
 	}
 	if (!batch.empty()) {
 		glBindVertexArray(VAO);
