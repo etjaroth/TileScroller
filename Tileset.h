@@ -15,7 +15,11 @@ class Tileset : public Box
 	Spritesheet spritesheet;
 	Render_Batch batch;
 
-	enum class tilename {dirt=0, grass, sand, water};
+	std::unordered_map<int, std::string> tilenames = { {0, "dirt"}, {1, "grass"}, {2, "sand"}, {3, "water"},
+	{4, "road"}, {5, "brown"}, {6, "grey"}, {7, "wood floor"},
+	{8, "tree leaves"}, {9, ""}, {10, ""}, {11, ""},
+	{12, ""}, {13, ""}, {14, ""}, {15, ""} };
+	std::set<int> wallsprites = { 3, 5, 6, 8 };
 	
 	const int temp_seed = 12345;
 	const float temp_freq = 0.00525;
@@ -26,6 +30,7 @@ class Tileset : public Box
 	const float humid_amp = 8.0f;
 
 	void insert_tile(glm::ivec2 pos, int sprite);
+	void load_tile_properties(std::string path="gamedata\\tile_properties.txt");
 
 public:
 	Tileset(const char* filepath, glm::ivec2 tilesize, Spatial_Hashmap* spatial_hashmap);

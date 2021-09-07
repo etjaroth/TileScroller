@@ -1,5 +1,5 @@
 #include "Menu.h"
-Menu::Menu() : sheet("button_sprites.png", glm::ivec2(16)) {
+Menu::Menu() : sheet("gamedata\\spritesheets\\button_sprites.png", glm::ivec2(16)) {
 	inverse_model = glm::mat4(1.0f);
 	inverse_view = glm::mat4(1.0f);
 	inverse_projection = glm::mat4(1.0f);

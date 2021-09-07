@@ -58,7 +58,9 @@ int main()
 
 	// Declare window size and GL settings
 	glViewport(0, 0, screenx, screeny);
+	
 	glEnable(GL_DEPTH_TEST);
+
 	glEnable(GL_BLEND); // Transparencey isn't perfect
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -86,10 +88,10 @@ int main()
 	spriteshader.dontuse();
 
 	// Make a game world
-	Scroller world(glm::ivec2(-50, 50), glm::ivec2(100), "tile_spritesheet.png", glm::ivec2(16));
-	//Scroller world(glm::vec2(-100, 100), glm::ivec2(200), "tile_spritesheet.png", glm::ivec2(16));
+	Scroller world(glm::ivec2(-50, 50), glm::ivec2(100), "gamedata\\spritesheets\\tile_spritesheet.png", glm::ivec2(16));
+	//Scroller world(glm::vec2(-100, 100), glm::ivec2(200), "gamedata\\spritesheets\\tile_spritesheet.png", glm::ivec2(16));
 
-	Spritesheet pc_sheet("Player.png", glm::ivec2(16));
+	Spritesheet pc_sheet("gamedata\\spritesheets\\Player.png", glm::ivec2(16));
 	Render_Batch pc_batch(&pc_sheet);
 	std::shared_ptr<Entity> player = std::make_shared<Entity>(&pc_batch, 0, glm::vec2(-0.25f, 0.25f), glm::vec2(0.5f));
 	player->set_depth(0.5f);

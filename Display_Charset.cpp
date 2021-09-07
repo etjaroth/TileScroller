@@ -16,14 +16,6 @@ Display_Charset::Display_Charset() : charset(), display(&charset)
 		exit(-1);
 	}
 
-	//// find path to font
-	//std::string font_name = std::filesystem::getPath("resources/fonts/Antonio-Bold.ttf");
-	//if (font_name.empty())
-	//{
-	//    std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
-	//    exit(-1);
-	//}
-
 	// load font as face
 	FT_Face face;
 	if (FT_New_Face(ft, "C:\\Windows\\Fonts\\arial.ttf", 0, &face)) {
@@ -85,9 +77,9 @@ Display_Charset::Display_Charset() : charset(), display(&charset)
 		for (int y = 0; y < vector2d.size(); ++y) {
 			for (int x = 0; x < vector2d[y].size(); ++x) {
 				const unsigned char greyscale_value = vector2d[y][x];
-				vector1d[(x + (y * texture_size.x)) * 4 + 0] = greyscale_value; // R
-				vector1d[(x + (y * texture_size.x)) * 4 + 1] = greyscale_value; // G
-				vector1d[(x + (y * texture_size.x)) * 4 + 2] = greyscale_value; // B
+				vector1d[(x + (y * texture_size.x)) * 4 + 0] = 255; // R
+				vector1d[(x + (y * texture_size.x)) * 4 + 1] = 255; // G
+				vector1d[(x + (y * texture_size.x)) * 4 + 2] = 255; // B
 				vector1d[(x + (y * texture_size.x)) * 4 + 3] = greyscale_value; // A
 			}
 		}

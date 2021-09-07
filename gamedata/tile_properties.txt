@@ -1,0 +1,16 @@
+dirt solid
+grass
+sand
+water solid
+road
+brown
+rock solid
+wood
+tall_grass solid
+white_A
+black_A
+white_B
+white_C
+black_B
+white_D
+black_C

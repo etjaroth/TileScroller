@@ -31,8 +31,6 @@ void Text::set_text(std::string new_text) {
 		char_pos.x = pos.x + offset.x + charset->get_glyph_bearing(c).x * font_size;
 		char_pos.y = pos.y + offset.y + charset->get_glyph_bearing(c).y * font_size;
 
-		std::cout << c << ":\n    Height: " << charset->get_glyph_size(c).y << "  Bearing: " << charset->get_glyph_bearing(c).y << std::endl;
-
 		glm::vec2 char_size = glm::vec2(charset->get_glyph_size(c)) * font_size;
 
 		output_string.push_back(std::make_shared<Display_Char>(charset, c, char_pos, char_size));

@@ -40,11 +40,6 @@ void Texture::load_texture(std::string filepath, bool flip) {
 
 	stbi_set_flip_vertically_on_load(flip);
 
-	if (filepath == "button_sprites.png") {
-		int i = 0;
-		++i;
-	}
-
 	int nrChannels;
 	const GLenum colortype = GL_RGBA;
 	unsigned char* data = stbi_load(filepath.c_str(), &texture_dimensions.x, &texture_dimensions.y, &nrChannels, 0);

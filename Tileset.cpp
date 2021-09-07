@@ -4,35 +4,46 @@
 #include <random>
 #include <fstream>
 
-Tileset::Tileset(const char* filepath, glm::ivec2 tilesize, Spatial_Hashmap* spatial_hashmap) : Box(),  spritesheet(filepath, tilesize), batch(&spritesheet) {
-	collision_map = spatial_hashmap;
+
+
+
+std::string get_substring(std::string original, std::string start, std::string end) { // exclusive?
+	size_t s = original.find(start);
+	size_t e;
+	if (end == "") {
+		e = end.length();
+	}
+	else {
+		e = original.find(end, s);
+	}
+
+	bool exclude_s = start != "" && s != std::string::npos;
+	bool exclude_e = e != std::string::npos;
+
+	std::string sub = original.substr(s + exclude_s, e - s + !exclude_s - exclude_e);
+	return sub;
 }
 
-const std::unordered_map<int, std::string> tilenames = { {0, "dirt"}, {1, "grass"}, {2, "sand"}, {3, "water"},
-	{4, "road"}, {5, "brown"}, {6, "grey"}, {7, "wood floor"},
-	{8, "tree leaves"}, {9, ""}, {10, ""}, {11, ""},
-	{12, ""}, {13, ""}, {14, ""}, {15, ""} };
-const std::set<int> wallsprites = {3, 5, 6, 8};
+
+
+Tileset::Tileset(const char* filepath, glm::ivec2 tilesize, Spatial_Hashmap* spatial_hashmap) : Box(), spritesheet(filepath, tilesize), batch(&spritesheet) {
+	collision_map = spatial_hashmap;
+	load_tile_properties();
+}
 
 void Tileset::insert_tile(glm::ivec2 pos, int sprite) {
-	if (pos.x > get_bottom_right( ).x || pos.x < get_top_left().x || pos.y < get_bottom_right().y || pos.y > get_top_left().y) {
+	if (pos.x > get_bottom_right().x || pos.x < get_top_left().x || pos.y < get_bottom_right().y || pos.y > get_top_left().y) {
 		std::cout << "Tile out of range!" << std::endl;
 		return;
 	}
 
 	std::unordered_map<glm::ivec2, std::shared_ptr<Entity>, ivec2_Hash_Function>::iterator i = tileset.find(pos);
 	if (i != tileset.end()) {
-
-
-		//std::cout << 0;
-
-
 		i->second->deactivate(); // removes it from the spatial hashmap
 		tileset.erase(i);
 		insert_tile(pos, sprite);
 	}
 	else {
-		//std::cout << 1;
 		std::shared_ptr<Entity> new_tile = std::make_shared<Entity>(&batch, sprite, glm::vec2(pos), glm::vec2(1.0f));
 		new_tile->set_depth(0.999f);
 		if (tilenames.find(sprite) != tilenames.end()) {
@@ -48,10 +59,55 @@ void Tileset::insert_tile(glm::ivec2 pos, int sprite) {
 			new_tile->activate();
 			new_tile->set_physics(0.0f, 0.0f, true);
 			new_tile->pin();
-			
+
 			new_tile->set_collision_event(1);
 			collision_map->insert(new_tile);
 		}
+	}
+}
+
+void Tileset::load_tile_properties(std::string path) {
+	std::ifstream file(path);
+
+	if (file.good()) {
+		tilenames.clear();
+		wallsprites.clear();
+
+		std::string line;
+		int sprite_number = 0;
+		while (std::getline(file, line)) {
+			// Format:
+			//save_file << "{(" << i->first.x << ", " << i->first.y << ") : " << i->second->get_sprite_index() << "}" << std::endl;
+			std::string tile_name = get_substring(line, "", " ");
+			std::string::size_type pos = line.find(' ');
+			if (pos == std::string::npos) { // just a name
+				tile_name = line;
+			}
+			else {
+				std::string properties = get_substring(line, " ", "");
+				while (properties != "") {
+					// Read property
+					std::string property_name = "";
+					if (line.find(' ') != std::string::npos) {
+						property_name = properties;
+						properties = "";
+					}
+					else {
+						property_name = get_substring(properties, "", " ");
+						properties = get_substring(properties, " ", "\0");
+					}
+
+					// Set property
+					if (property_name == "solid") {
+						wallsprites.insert(sprite_number);
+					}
+				}
+			}
+			tilenames.insert({ sprite_number, tile_name });
+
+			++sprite_number;
+		}
+		file.close();
 	}
 }
 
@@ -61,7 +117,7 @@ void Tileset::render() {
 
 // n is the number that gets inserted into the map, r is a random number, m does nothing
 void splash(std::unordered_map<glm::ivec2, int, ivec2_Hash_Function>* map, const glm::ivec2 coord, const int n, int r, const int m, unsigned int cycles) {
-	
+
 	(*map)[coord] = n;
 
 	if (cycles > 0) {
@@ -75,7 +131,7 @@ void splash(std::unordered_map<glm::ivec2, int, ivec2_Hash_Function>* map, const
 
 
 void Tileset::save() {
-	std::string path = ("savedata\\" + std::to_string((int)position.x) + "x" + std::to_string((int)position.y) + "y.txt");
+	std::string path = ("gamedata\\savedata\\" + std::to_string((int)position.x) + "x" + std::to_string((int)position.y) + "y.txt");
 	save(path);
 }
 
@@ -95,18 +151,11 @@ void Tileset::save(std::string path) {
 	save_file.close();
 }
 
-std::string get_substring(std::string original, std::string start, std::string end) {
-	size_t s = original.find(start);
-	size_t e = original.find(end, s);
-	std::string sub = original.substr(s + 1, e - s - 1);
-	return sub;
-}
-
 void Tileset::load(glm::ivec2 start, glm::ivec2 end) {
 	set_pos(glm::vec2(start));
 	set_size(glm::vec2((end.x - start.x), (start.y - end.y)));
 
-	std::string path = ("savedata\\" + std::to_string((int)position.x) + "x" + std::to_string((int)position.y) + "y.txt");
+	std::string path = ("gamedata\\savedata\\" + std::to_string((int)position.x) + "x" + std::to_string((int)position.y) + "y.txt");
 	std::ifstream file(path);
 
 	if (file.good()) {
