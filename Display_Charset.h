@@ -18,6 +18,8 @@ class Display_Charset
 		glm::ivec2 glyph_size;
 		glm::ivec2 glyph_bearing;
 		unsigned int advance;
+
+		int y_padding;
 	};
 
 	std::unordered_map <char, character> chars;
@@ -33,5 +35,7 @@ public:
 
 	glm::ivec2 get_glyph_size(char c);
 	glm::ivec2 get_glyph_bearing(char c);
+	
 	unsigned int get_advance(char c);
+	int get_y_padding(char c);
 };
