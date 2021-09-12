@@ -38,14 +38,14 @@ void Text::set_text(std::string new_text) {
 
 		offset.x += (charset->get_advance(c)) * font_size;
 
-		std::cout << c << ": \n"
+		/*std::cout << c << ": \n"
 			<< "    sprite_pos:" << charset->get_sprite_pos(c).x << ", " << charset->get_sprite_pos(c).y << "\n"
 			<< "    sprite_size:" << charset->get_sprite_size(c).x << ", " << charset->get_sprite_size(c).y << "\n"
 			<< "    glyph_size:" << charset->get_glyph_size(c).x << ", " << charset->get_glyph_size(c).y << "\n"
 			<< "    glyph_bearing:" << charset->get_glyph_bearing(c).x << ", " << charset->get_glyph_bearing(c).y << "\n"
 			<< "    advance:" << charset->get_advance(c) << "\n"
 			<< "    y_padding:" << charset->get_y_padding(c)
-			<< std::endl;
+			<< std::endl;*/
 	}
 }
 

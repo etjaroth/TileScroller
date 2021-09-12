@@ -86,12 +86,12 @@ Display_Charset::Display_Charset() : charset(), display(&charset)
 			texture_size.x += glyph_size.x;
 		}
 
-		for (auto y = --vector2d.end(); y != vector2d.begin(); --y) {
+		/*for (auto y = --vector2d.end(); y != vector2d.begin(); --y) {
 			for (auto x = y->begin(); x != y->end(); ++x) {
 				std::cout << (*x > 0 ? 'H' : 'i');
 			}
 			std::cout << std::endl;
-		}
+		}*/
 
 		// read 2D vector into 1D vector
 		int hhhh = texture_size.x * texture_size.y * 4;

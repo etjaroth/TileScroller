@@ -27,3 +27,11 @@ void Collision_Info::set_name(std::string n) {
 std::string Collision_Info::get_name() {
 	return name;
 }
+
+void Collision_Info::set_is_solid(bool solid) {
+	solid_object = solid;
+}
+
+bool Collision_Info::is_solid() {
+	return solid_object;
+}

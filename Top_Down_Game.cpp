@@ -124,6 +124,7 @@ int main()
 
 			//Input
 			glm::vec2 move = glm::vec2(0.0f);
+			//move = glm::vec2(0.0f, 1.0f);
 			if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // exit on escape
 				glfwSetWindowShouldClose(window, true);
 			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -188,18 +189,28 @@ int main()
 				int flip = camera_size >= 1 ? 1 : -1;
 				move *= flip;
 
+				glm::vec2 pvelocity = player->get_velocity();
+
 				if (glm::length(player->get_velocity()) < 0.01f) {
 					player->change_velocity(-move);
 				}
 
+				pvelocity = player->get_velocity();
+
 				world.collide();
 				world.iterate();
 
+				pvelocity = player->get_velocity();
+
 				player->set_velocity(0.5f * player->get_velocity());
+				pvelocity = player->get_velocity();
+				std::cout << player->get_velocity().x << ", " << player->get_velocity().y << std::endl;
 
 				if (glm::length(player->get_velocity()) < 0.00001f) {
 					player->set_velocity(glm::vec2(0.0f));
 				}
+
+				pvelocity = player->get_velocity();
 
 				// Move view
 				world.set_pos(player->get_pos() - scroller_offset);

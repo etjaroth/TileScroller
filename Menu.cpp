@@ -9,7 +9,7 @@ Menu::Menu() : sheet("gamedata\\spritesheets\\button_sprites.png", glm::ivec2(16
 	// Create menu pages
 		// Main Menu
 	pages.push_back({ &sheet, &charset });
-	//pages[0].add_button(glm::vec2(-0.75f, 0.75f), glm::vec2(1.5f, 1.0f), Menu_Page::Menu_Actions::set_state_to_gameplay);
+	pages[0].add_button(glm::vec2(-0.75f, 0.75f), glm::vec2(1.5f, 1.0f), Menu_Page::Menu_Actions::set_state_to_gameplay);
 	//pages[0].add_text(glm::vec2(-0.5f, 0.2f), 0.01f, "Start");
 	//pages[0].add_text(glm::vec2(-0.9f, 0.2f), 0.005f, "g");
 	pages[0].add_text(glm::vec2(-0.9f, 0.2f), 0.005f, "Hello World!");

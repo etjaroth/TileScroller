@@ -45,12 +45,16 @@ Collision_Box::Collision_Box(glm::vec2 pos, glm::vec2 size) : Box(pos, size) {
 }
 
 void Collision_Box::iterate() {
+	bool collision_happened = false;
 	while (has_events()) {
 		std::shared_ptr<Collision_Info> cevent = collision_events.front();
 		collision_events.pop();
 
+		collision_happened = collision_happened || cevent->is_solid();
+
 		if (!pinned) {
 			change_pos(cevent->get_forced_move());
+
 		}
 	}
 
@@ -157,7 +161,7 @@ Collision_Box::collision_cases Collision_Box::get_collision_case(Collision_Box* 
 }
 
 glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
-	// adapted from https://gamedevelopment.tutsplus.com/tutorials/how-to-create-a-custom-2d-physics-engine-the-basics-and-impulse-resolution--gamedev-6331
+	// Adapted from https://gamedevelopment.tutsplus.com/tutorials/how-to-create-a-custom-2d-physics-engine-the-basics-and-impulse-resolution--gamedev-6331
 
 	if (this == other_box) {
 		return glm::vec2(0.0f);
@@ -236,6 +240,9 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 		std::shared_ptr<Collision_Info> cinfo_a = other_box->collision_event();
 		std::shared_ptr<Collision_Info> cinfo_b = collision_event();
 
+		cinfo_a->set_is_solid(other_box->is_solid());
+		cinfo_b->set_is_solid(is_solid());
+
 		if (is_solid()) {
 			// Calculate relative velocity
 			glm::vec2 relative_velocity = other_box->get_velocity() - get_velocity();
@@ -277,8 +284,13 @@ glm::vec2 Collision_Box::collide(Collision_Box* other_box) {
 			//A.position -= A.inv_mass * correction;
 			//B.position += B.inv_mass * correction;
 
-			cinfo_a->force_move(get_inverse_mass() * correction);
-			cinfo_b->force_move(-1 * other_box->get_inverse_mass() * correction);
+			if (glm::length(correction) > 0.001) {
+				//change_pos(get_inverse_mass() * correction);
+				//other_box->change_pos(-other_box->get_inverse_mass() * correction);
+
+				cinfo_a->force_move(get_inverse_mass() * correction);
+				cinfo_b->force_move(-1 * other_box->get_inverse_mass() * correction);
+			}
 		}
 
 		collision_events.push(cinfo_a);

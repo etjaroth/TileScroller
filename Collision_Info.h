@@ -6,6 +6,7 @@ class Collision_Info
 	glm::vec2 velocity = glm::vec2(0.0f);
 	int collision_case = -1;
 	std::string name = "unnamed_object";
+	bool solid_object = false;
 
 public:
 	Collision_Info();
@@ -18,6 +19,9 @@ public:
 
 	void set_name(std::string n);
 	std::string get_name();
+
+	void set_is_solid(bool solid);
+	bool is_solid();
 
 	void set_collision_case(int c) { collision_case = c; }
 	std::string get_collision_case_name() {
