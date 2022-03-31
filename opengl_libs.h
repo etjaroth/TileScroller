@@ -4,7 +4,7 @@
 #pragma warning( disable : 26451)
 // Opengl Management
 #include <glad\glad.h>
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 
 // Opengl Vector Math
 #include <glm/glm.hpp>

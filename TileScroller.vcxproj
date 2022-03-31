@@ -79,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)\..\..\cpplibs\openglDependencies\$(Configuration);C:\Users\Ethan\Documents\cpplibs\lib\opengl;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\..\..\cpplibs\openglDependencies\$(Configuration);C:\Users\Ethan\Documents\cpplibs\lib\opengl;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\..\..\cpplibs\FastNoise\;$(ProjectDir)\..\..\cpplibs\openglDependencies\$(Configuration);$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\..\..\cpplibs\openglDependencies\$(Configuration);$(ProjectDir)\..\..\cpplibs\FastNoise;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\cpplibs\FastNoise;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ShowIncludes>false</ShowIncludes>
     </ClCompile>
