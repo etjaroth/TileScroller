@@ -64,7 +64,6 @@ void Collision_Box::iterate() {
 }
 
 void Collision_Box::set_pos(glm::vec2 new_pos) {
-	//	previous_pos = get_pos();
 	Box::set_pos(new_pos);
 }
 

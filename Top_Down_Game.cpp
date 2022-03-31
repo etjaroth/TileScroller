@@ -257,7 +257,9 @@ int main()
 
 	// Cleanup
 	glfwTerminate();
+
 	return 0;
+
 }
 
 
